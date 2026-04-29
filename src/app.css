@@ -1,0 +1,28 @@
+/* Fleur De Leah – decorative script for Latin-only headings (bride/groom names, section titles) */
+/* Be Vietnam Pro – full Vietnamese support for all body text and guest names */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Fleur+De+Leah&subset=vietnamese&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-pastelBlue: #A7C7E7;
+  --color-pastelLila: #CDB4DB;
+  --color-pastelWhite: #F8F9FA;
+  --font-script: "Fleur De Leah", cursive;
+  --font-sans: "Be Vietnam Pro", sans-serif;
+}
+
+body {
+  background-color: #F8F9FA;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: #333;
+}
+
+h1, h2, h3, .font-script {
+  font-family: 'Fleur De Leah', cursive;
+}
+
+/* Vietnamese guest name must NOT inherit the script font */
+.font-viet {
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
