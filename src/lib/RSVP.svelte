@@ -1,6 +1,7 @@
 <script>
   export let guestName = '';
   export let appellation = 'tôi';
+  export let salutation = '';
   let name = '';
   $: if (!name && guestName) name = guestName;
   let guests = 1;
@@ -78,7 +79,7 @@
   <div class="max-w-2xl mx-auto px-4 relative z-10">
     <div class="bg-white/70 backdrop-blur-md border border-gray-100 p-8 md:p-12 rounded-3xl shadow-xl">
       <h2 class="text-4xl md:text-5xl font-script text-center text-gray-800 mb-4">Xác Nhận Tham Dự</h2>
-      <p class="text-center text-gray-500 mb-8">Sự hiện diện của bạn là niềm vinh hạnh cho gia đình chúng {appellation}</p>
+      <p class="text-center text-gray-500 mb-8">Sự hiện diện của {salutation || 'bạn'} là niềm vinh hạnh cho gia đình chúng {appellation}</p>
       
       {#if submitted}
         <div class="text-center py-10 animate-fade-in-up">

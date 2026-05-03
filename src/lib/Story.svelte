@@ -1,9 +1,4 @@
 <script lang="ts">
-  const events = [
-    { year: '2018', title: 'Our first meet', desc: 'Dưới cơn mưa rào năm ấy, ánh mắt lỡ va vào nhau. LOL wtf' },
-    { year: '2019', title: 'She moves to Hamburg', desc: 'Một buổi tối lãng mạn bên bờ hồ Alster' },
-    { year: '2027', title: 'Level Up', desc: 'Bắt đầu hành trình mới với tư cách là vợ chồng hihi.' }
-  ];
 
   // ── Photos for the heart collage ─────────────────────────────────────────
   const storyModules = import.meta.glob('../assets/story/*.jpg', { eager: true }) as Record<string, { default: string }>;

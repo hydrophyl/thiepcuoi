@@ -11,16 +11,23 @@
   const weddingDate = new Date('2026-12-27T18:00:00');
   let guestName = '';
   let appellation = 'tôi'; // default self-reference; override via ?appellation=con|cháu|em|…
+  let salutation = ''; // how to address the guest; override via ?salutation=ông|bà|anh|chị|em|cháu|…
 
   onMount(() => {
     // 1. Check for slug in URL (e.g. ?slug=thanh or ?name=thanh)
     const params = new URLSearchParams(window.location.search);
     const rawName = params.get('slug') || params.get('name') || '';
     const rawAppellation = params.get('appellation') || '';
+    const rawSalutation = params.get('salutation') || '';
 
     if (rawAppellation) {
       const clean = sanitizeHtml(rawAppellation, { allowedTags: [], allowedAttributes: {} });
       if (clean) appellation = clean;
+    }
+
+    if (rawSalutation) {
+      const clean = sanitizeHtml(rawSalutation, { allowedTags: [], allowedAttributes: {} });
+      if (clean) salutation = clean;
     }
 
     if (rawName) {
@@ -57,7 +64,7 @@
 <main class="font-sans antialiased text-gray-800 scroll-smooth overflow-x-hidden">
   {#if guestName}
     <div class="bg-pastelBlue text-white text-center py-2 px-4 shadow-md sticky top-0 z-50">
-      <p class="text-sm font-viet">Kính mời <span class="font-bold text-slate-800 font-viet">{guestName}</span> tới dự lễ cưới của chúng {appellation}!</p>
+      <p class="text-sm font-viet">Kính mời {#if salutation}<span class="font-viet">{salutation}</span> {/if}<span class="font-bold text-slate-800 font-viet">&nbsp;{guestName}</span> tới dự lễ cưới của chúng {appellation}!</p>
     </div>
   {/if}
 
@@ -65,7 +72,7 @@
   <Story />
   <Gallery />
   <Locations />
-  <RSVP guestName={guestName} {appellation} />
+  <RSVP guestName={guestName} {appellation} {salutation} />
   <AudioPlayer autoplay={false} />
   
   <footer class="py-8 bg-gray-50 text-center border-t border-gray-200">
