@@ -1,8 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import heroBg from '../assets/hero_bg.jpg';
+  import type { Locale } from './locales';
 
   export let weddingDate: Date;
+  export let locale: Locale;
 
   let days = 0;
   let hours = 0;
@@ -27,35 +29,61 @@
     return () => clearInterval(interval);
   });
 </script>
+
+<!--
+  Hero: real <img> instead of CSS background so the browser can LCP-prioritise it.
+  The image is decorative (alt="" aria-hidden) — the section text is the meaningful content.
+-->
 <section
-  class="h-screen flex flex-col justify-center items-center text-center px-4 bg-cover bg-center bg-no-repeat"
-  style="background-image: url({heroBg})"
+  class="h-screen relative flex flex-col justify-center items-center text-center px-4 overflow-hidden"
+  aria-label={locale.heroAriaLabel}
 >
-  <div class="max-w-3xl animate-fade-in-up">
-    <h2 class="tracking-widest md:text-lg text-gray-500 mb-4">We are getting married</h2>
-    <h1 class="text-6xl md:text-8xl font-script text-gray-800 mb-6 drop-shadow-sm">Bé Hy & Bé Di</h1>
+  <!-- LCP hero image: fetchpriority=high tells the browser this is the most important image -->
+  <img
+    src={heroBg}
+    alt=""
+    aria-hidden="true"
+    fetchpriority="high"
+    width="1920"
+    height="1080"
+    class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+  />
+
+  <!-- Content sits above the image -->
+  <div class="relative z-10 max-w-3xl animate-fade-in-up">
+    <h2 class="tracking-widest text-fluid-lg text-gray-500 mb-4">{locale.heroSubheading}</h2>
+    <h1 class="text-fluid-hero font-script text-gray-800 mb-6 drop-shadow-sm">Bé Hy & Bé Di</h1>
     <div class="flex flex-col sm:flex-row gap-3 justify-center items-center mb-10 text-gray-600">
-      <span class="text-base md:text-lg">🇻🇳 Hồ Chí Minh · 27.12.2026</span>
+      <span class="text-fluid-lg">🇻🇳 Hồ Chí Minh · 27.12.2026</span>
       <span class="hidden sm:inline text-gray-400">·</span>
-      <span class="text-base md:text-lg">🇻🇳 Hà Nội · 05.01.2027</span>
+      <span class="text-fluid-lg">🇻🇳 Hà Nội · 05.01.2027</span>
     </div>
 
-    <div class="flex gap-4 md:gap-8 justify-center mt-8 text-gray-700">
+    <!--
+      role="timer": tells screen readers this is a countdown clock.
+      aria-label: provides the current value when focused — avoids
+      aria-live announcements every second which would be disruptive.
+    -->
+    <div
+      role="timer"
+      aria-label={locale.countdown.ariaLabel(days, hours, minutes, seconds)}
+      class="flex gap-4 md:gap-8 justify-center mt-8 text-gray-700"
+    >
       <div class="flex flex-col items-center">
-        <span class="text-3xl md:text-5xl font-script">{days}</span>
-        <span class="text-xs uppercase tracking-wider mt-1">Ngày</span>
+        <span class="text-fluid-count font-script" aria-hidden="true">{days}</span>
+        <span class="text-xs uppercase tracking-wider mt-1">{locale.countdown.days}</span>
       </div>
       <div class="flex flex-col items-center">
-        <span class="text-3xl md:text-5xl font-script">{hours}</span>
-        <span class="text-xs uppercase tracking-wider mt-1">Giờ</span>
+        <span class="text-fluid-count font-script" aria-hidden="true">{hours}</span>
+        <span class="text-xs uppercase tracking-wider mt-1">{locale.countdown.hours}</span>
       </div>
       <div class="flex flex-col items-center">
-        <span class="text-3xl md:text-5xl font-script">{minutes}</span>
-        <span class="text-xs uppercase tracking-wider mt-1">Phút</span>
+        <span class="text-fluid-count font-script" aria-hidden="true">{minutes}</span>
+        <span class="text-xs uppercase tracking-wider mt-1">{locale.countdown.minutes}</span>
       </div>
       <div class="flex flex-col items-center">
-        <span class="text-3xl md:text-5xl font-script">{seconds}</span>
-        <span class="text-xs uppercase tracking-wider mt-1">Giây</span>
+        <span class="text-fluid-count font-script" aria-hidden="true">{seconds}</span>
+        <span class="text-xs uppercase tracking-wider mt-1">{locale.countdown.seconds}</span>
       </div>
     </div>
   </div>
@@ -64,9 +92,18 @@
 <style>
   @keyframes fade-in-up {
     from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
   }
   .animate-fade-in-up {
     animation: fade-in-up 1.5s ease-out forwards;
+  }
+  /* prefers-reduced-motion: global reset in app.css covers animation-duration,
+     but we also explicitly make the element fully visible so it never stays hidden */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in-up {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
   }
 </style>

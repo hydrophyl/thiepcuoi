@@ -1,7 +1,11 @@
-<script>
+<script lang="ts">
+  import type { Locale } from './locales';
+
   export let guestName = '';
   export let appellation = 'tôi';
   export let salutation = '';
+  export let locale: Locale;
+
   let name = '';
   $: if (!name && guestName) name = guestName;
   let guests = 1;
@@ -19,22 +23,22 @@
     let valid = true;
 
     if (!name.trim()) {
-      errors.name = 'Vui lòng nhập tên của bạn.';
+      errors.name = locale.nameError;
       valid = false;
     } else if (name.trim().length > 100) {
-      errors.name = 'Tên quá dài (tối đa 100 ký tự).';
+      errors.name = locale.nameTooLong;
       valid = false;
     }
 
     if (attendance !== 'no') {
       if (!Number.isInteger(guests) || guests < 1 || guests > 20) {
-        errors.guests = 'Số người phải từ 1 đến 20.';
+        errors.guests = locale.guestsError;
         valid = false;
       }
     }
 
     if (attendance === 'maybe' && !confirmBy) {
-      errors.confirmBy = 'Vui lòng chọn ngày bạn sẽ xác nhận.';
+      errors.confirmBy = locale.confirmByError;
       valid = false;
     }
 
@@ -78,46 +82,46 @@
   
   <div class="max-w-2xl mx-auto px-4 relative z-10">
     <div class="bg-white/70 backdrop-blur-md border border-gray-100 p-8 md:p-12 rounded-3xl shadow-xl">
-      <h2 class="text-4xl md:text-5xl font-script text-center text-gray-800 mb-4">Xác Nhận Tham Dự</h2>
-      <p class="text-center text-gray-500 mb-8">Sự hiện diện của {salutation || 'bạn'} là niềm vinh hạnh cho gia đình chúng {appellation}</p>
+      <h2 class="text-fluid-title font-script text-center text-gray-800 mb-4">{locale.rsvpTitle}</h2>
+      <p class="text-center text-gray-500 mb-8">{locale.rsvpSubtitle({ salutation, appellation })}</p>
       
       {#if submitted}
         <div class="text-center py-10 animate-fade-in-up">
             <svg class="w-16 h-16 text-pastelLila mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            <h3 class="text-2xl font-semibold mb-2">Cảm ơn bạn!</h3>
-            <p class="text-gray-600">Phản hồi của bạn đã được ghi nhận.</p>
+            <h3 class="text-2xl font-semibold mb-2">{locale.rsvpThankYouTitle}</h3>
+            <p class="text-gray-600">{locale.rsvpThankYouMsg}</p>
         </div>
       {:else}
         <form on:submit|preventDefault={handleSubmit} class="space-y-6">
           <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Họ và Tên</label>
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">{locale.nameLabel}</label>
             <input 
               type="text" 
               id="name" 
               bind:value={name}
               class="w-full px-4 py-3 rounded-lg border transition-all outline-none focus:ring-2 focus:ring-pastelBlue focus:border-transparent
                 {errors.name ? 'border-red-400 bg-red-50' : 'border-gray-300'}"
-              placeholder="Nhập tên của bạn..."
+              placeholder={locale.namePlaceholder}
             />
             {#if errors.name}<p class="mt-1 text-xs text-red-500">{errors.name}</p>{/if}
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label for="attendance" class="block text-sm font-medium text-gray-700 mb-1">Tham dự</label>
+              <label for="attendance" class="block text-sm font-medium text-gray-700 mb-1">{locale.attendanceLabel}</label>
               <select 
                 id="attendance" 
                 bind:value={attendance}
                 class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pastelBlue focus:border-transparent outline-none transition-all"
               >
-                <option value="yes">Chắc chắn rồi! 🎉</option>
-                <option value="no">Rất tiếc, mình không thể đến</option>
-                <option value="maybe">Chưa chắc, mình sẽ xác nhận sau</option>
+                <option value="yes">{locale.attendanceYes}</option>
+                <option value="no">{locale.attendanceNo}</option>
+                <option value="maybe">{locale.attendanceMaybe}</option>
               </select>
             </div>
             
             <div>
-              <label for="guests" class="block text-sm font-medium text-gray-700 mb-1">Số lượng người</label>
+              <label for="guests" class="block text-sm font-medium text-gray-700 mb-1">{locale.guestsLabel}</label>
               <input 
                 type="number" 
                 id="guests" 
@@ -133,22 +137,22 @@
             </div>
 
             <div class="md:col-span-2">
-              <label for="city" class="block text-sm font-medium text-gray-700 mb-1">Bạn sẽ tham dự tiệc ở thành phố nào?</label>
+              <label for="city" class="block text-sm font-medium text-gray-700 mb-1">{locale.cityLabel}</label>
               <select 
                 id="city" 
                 bind:value={city}
                 disabled={attendance === 'no'}
                 class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pastelBlue focus:border-transparent outline-none transition-all disabled:bg-gray-100 disabled:text-gray-400"
               >
-                <option value="Ho Chi Minh">Hồ Chí Minh – 27.12.2026 (6PM–9PM)</option>
-                <option value="Hanoi">Hà Nội – 05.01.2027 (5PM–8PM)</option>
-                <option value="Both">Cả hai!</option>
+                <option value="Ho Chi Minh">{locale.cityHCM}</option>
+                <option value="Hanoi">{locale.cityHanoi}</option>
+                <option value="Both">{locale.cityBoth}</option>
               </select>
             </div>
 
             {#if attendance === 'maybe'}
             <div class="md:col-span-2">
-              <label for="confirmBy" class="block text-sm font-medium text-gray-700 mb-1">Bạn sẽ xác nhận trước ngày…</label>
+              <label for="confirmBy" class="block text-sm font-medium text-gray-700 mb-1">{locale.confirmByLabel}</label>
               <input
                 type="date"
                 id="confirmBy"
@@ -166,7 +170,7 @@
             disabled={loading}
             class="w-full py-4 mt-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-black transition-colors focus:ring-4 focus:ring-gray-200 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {loading ? 'Đang gửi...' : 'Gửi Xác Nhận'}
+            {loading ? locale.submittingBtn : locale.submitBtn}
           </button>
         </form>
       {/if}

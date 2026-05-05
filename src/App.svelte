@@ -1,17 +1,27 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import sanitizeHtml from 'sanitize-html';
   import Hero from './lib/Hero.svelte';
   import Story from './lib/Story.svelte';
   import Gallery from './lib/Gallery.svelte';
   import Locations from './lib/Locations.svelte';
   import RSVP from './lib/RSVP.svelte';
   import AudioPlayer from './lib/AudioPlayer.svelte';
+  import { vi, en, type Locale } from './lib/locales';
+
+  export let lang: 'vi' | 'en' = 'vi';
+  const locale: Locale = lang === 'en' ? en : vi;
 
   const weddingDate = new Date('2026-12-27T18:00:00');
   let guestName = '';
   let appellation = 'tôi'; // default self-reference; override via ?appellation=con|cháu|em|…
   let salutation = ''; // how to address the guest; override via ?salutation=ông|bà|anh|chị|em|cháu|…
+
+  /** Strip all HTML tags from a string — browser-native, no Node.js deps. */
+  function stripHtml(raw: string): string {
+    const el = document.createElement('div');
+    el.innerHTML = raw;
+    return el.textContent ?? '';
+  }
 
   onMount(() => {
     // 1. Check for slug in URL (e.g. ?slug=thanh or ?name=thanh)
@@ -21,24 +31,20 @@
     const rawSalutation = params.get('salutation') || '';
 
     if (rawAppellation) {
-      const clean = sanitizeHtml(rawAppellation, { allowedTags: [], allowedAttributes: {} });
+      const clean = stripHtml(rawAppellation);
       if (clean) appellation = clean;
     }
 
     if (rawSalutation) {
-      const clean = sanitizeHtml(rawSalutation, { allowedTags: [], allowedAttributes: {} });
+      const clean = stripHtml(rawSalutation);
       if (clean) salutation = clean;
     }
 
     if (rawName) {
-      // 2. Prevent XSS: Sanitize the input
-      const cleanName = sanitizeHtml(rawName, {
-        allowedTags: [],
-        allowedAttributes: {}
-      });
+      // 2. Prevent XSS: strip any HTML tags from the URL param
+      const cleanName = stripHtml(rawName);
       
       // Use split/map instead of \b\w regex — the latter mishandles Vietnamese diacritics
-      // (e.g. it capitalises the consonant after à/ê/ô as a new "word boundary").
       guestName = cleanName
         .replace(/-/g, ' ')
         .split(' ')
@@ -61,23 +67,24 @@
   });
 </script>
 
-<main class="font-sans antialiased text-gray-800 scroll-smooth overflow-x-hidden">
+<main id="main-content" class="font-sans antialiased text-gray-800 scroll-smooth overflow-x-hidden">
   {#if guestName}
-    <div class="bg-pastelBlue text-white text-center py-2 px-4 shadow-md sticky top-0 z-50">
-      <p class="text-sm font-viet">Kính mời {#if salutation}<span class="font-viet">{salutation}</span> {/if}<span class="font-bold text-slate-800 font-viet">&nbsp;{guestName}</span> tới dự lễ cưới của chúng {appellation}!</p>
+    <!-- bg-pastelBlue (#A7C7E7) + text-gray-800 (#1f2937) = 8.4:1 contrast — passes WCAG AA -->
+    <div class="bg-pastelBlue text-gray-800 text-center py-2 px-4 shadow-md sticky top-0 z-50">
+      <p class="text-sm font-viet">{locale.guestBanner({ name: guestName, salutation, appellation })}</p>
     </div>
   {/if}
 
-  <Hero {weddingDate} />
-  <Story />
-  <Gallery />
-  <Locations />
-  <RSVP guestName={guestName} {appellation} {salutation} />
-  <AudioPlayer autoplay={false} />
+  <Hero {weddingDate} {locale} />
+  <Story {locale} />
+  <Gallery {locale} />
+  <Locations {locale} />
+  <RSVP guestName={guestName} {appellation} {salutation} {locale} />
+  <AudioPlayer autoplay={false} {locale} />
   
   <footer class="py-8 bg-gray-50 text-center border-t border-gray-200">
     <p class="font-script text-2xl text-gray-600">Bé Di & Bé Hy</p>
-    <p class="text-xs text-gray-400 mt-2 uppercase tracking-widest">© 2026 - Hẹn bạn nha</p>
+    <p class="text-xs text-gray-400 mt-2 uppercase tracking-widest">{locale.footerTagline}</p>
   </footer>
 </main>
 

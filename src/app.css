@@ -1,6 +1,5 @@
-/* Fleur De Leah – decorative script for Latin-only headings (bride/groom names, section titles) */
-/* Be Vietnam Pro – full Vietnamese support for all body text and guest names */
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Fleur+De+Leah&subset=vietnamese&display=swap');
+/* Google Fonts now loaded via <link> in index.html for faster render (avoids @import render-block) */
+/* Be Vietnam Pro – used for all text including headings and section titles */
 
 @import "tailwindcss";
 
@@ -11,6 +10,8 @@
   --font-script: "Fleur De Leah", cursive;
   --font-sans: "Be Vietnam Pro", sans-serif;
 }
+
+/* ─── Base ──────────────────────────────────────────────────────────────────── */
 
 body {
   background-color: #F8F9FA;
@@ -25,4 +26,123 @@ h1, h2, h3, .font-script {
 /* Vietnamese guest name must NOT inherit the script font */
 .font-viet {
   font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* ─── Skip Link (WCAG 2.4.1) ────────────────────────────────────────────────── */
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0.5rem;
+  z-index: 9999;
+  padding: 0.5rem 1.25rem;
+  background: #1f2937;
+  color: #fff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0 0 0.5rem 0.5rem;
+  text-decoration: none;
+  transition: top 0.1s ease;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #6366f1;
+  outline-offset: 2px;
+}
+
+/* ─── Focus Indicators (WCAG 2.4.7 / 2.4.11 / Apple HIG) ────────────────────── */
+/* Custom ring: 3px indigo, 3:1+ contrast against both white and pastel surfaces  */
+
+:focus-visible {
+  outline: 3px solid #6366f1;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove focus ring for mouse/touch clicks that already show visual state */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ─── Touch Targets (Apple HIG: 44×44pt minimum) ────────────────────────────── */
+
+button,
+a,
+[role="button"],
+input,
+select,
+textarea {
+  min-height: 44px;
+}
+
+button,
+a,
+[role="button"] {
+  min-width: 44px;
+}
+
+/* ─── Fluid Typography Scale (clamp: smooth interpolation, no stepped jumps) ── */
+/* Replaces paired `text-Xnl md:text-Ynl` Tailwind classes across components     */
+
+/* Hero couple name — 48px (375px screen) → 96px (1280px+) */
+.text-fluid-hero {
+  font-size: clamp(3rem, 5vw + 1.5rem, 6rem);
+}
+
+/* Section titles (Our Story, Kỷ Niệm, Sự Kiện, Xác Nhận…) — 32px → 56px */
+.text-fluid-title {
+  font-size: clamp(2rem, 3.5vw + 0.75rem, 3.5rem);
+}
+
+/* Subtitles and pullquotes — 22px → 32px */
+.text-fluid-sub {
+  font-size: clamp(1.375rem, 2vw + 0.625rem, 2rem);
+}
+
+/* Countdown numbers — 30px → 48px */
+.text-fluid-count {
+  font-size: clamp(1.875rem, 3vw + 0.75rem, 3rem);
+}
+
+/* Lead body / date lines — 16px → 20px */
+.text-fluid-lg {
+  font-size: clamp(1rem, 1vw + 0.625rem, 1.25rem);
+}
+
+/* ─── Reduced Motion (WCAG 2.3.3) ───────────────────────────────────────────── */
+/* Kills all animations and transitions for users who prefer reduced motion.      */
+/* Elements with animation-fill-mode:forwards remain at their final state.        */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── High Contrast (iOS/macOS "Increase Contrast") ─────────────────────────── */
+
+@media (prefers-contrast: more) {
+  body {
+    color: #111827; /* gray-900 */
+  }
+
+  /* Reinforce form borders */
+  input,
+  select,
+  textarea {
+    border-width: 2px !important;
+    border-color: #374151 !important; /* gray-700 */
+  }
+
+  /* Stronger focus indicator */
+  :focus-visible {
+    outline-width: 4px;
+    outline-color: #000;
+  }
 }

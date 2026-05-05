@@ -1,4 +1,7 @@
 <script lang="ts">
+  import type { Locale } from './locales';
+
+  export let locale: Locale;
 
   // ── Photos for the heart collage ─────────────────────────────────────────
   const storyModules = import.meta.glob('../assets/story/*.jpg', { eager: true }) as Record<string, { default: string }>;
@@ -27,8 +30,8 @@
   <div class="max-w-4xl mx-auto px-4">
     <!-- 8-year intro -->
     <div class="text-center mb-16">
-      <h2 class="text-5xl font-script text-gray-800 mb-4">Our Story</h2>
-      <p class="text-2xl md:text-3xl font-light text-gray-600 leading-relaxed">
+      <h2 class="text-fluid-title font-script text-gray-800 mb-4">Our Story</h2>
+      <p class="text-fluid-sub font-light text-gray-600 leading-relaxed">
         8 years. Countless memories. One incredible journey…
       </p>
     </div>
@@ -41,7 +44,19 @@
             style="grid-column: {pos.col}; grid-row: {pos.row};"
           >
             {#if photos[i]}
-              <img src={photos[i]} alt="Memory {i + 1}" class="w-full h-full object-cover" />
+              <!--
+                loading="lazy": defer off-screen images (heart is below the fold).
+                width/height: ~74px per cell (400px container − 4×8px gap) / 5 cols.
+                Prevents CLS even though object-cover fills the CSS-sized cell.
+              -->
+              <img
+                src={photos[i]}
+                alt={locale.storyImageAlt(i + 1)}
+                class="w-full h-full object-cover"
+                loading="lazy"
+                width="74"
+                height="74"
+              />
             {/if}
           </div>
         {/each}
@@ -50,7 +65,7 @@
 
     <!-- Turning the page -->
     <div class="text-center mb-16">
-      <p class="text-xl md:text-2xl text-gray-700 leading-relaxed font-light italic">
+      <p class="text-fluid-sub text-gray-700 leading-relaxed font-light italic">
         This year, we're turning the page to a special chapter — to become <span class="font-semibold not-italic text-gray-900">Husband &amp; Wife</span>
       </p>
     </div>

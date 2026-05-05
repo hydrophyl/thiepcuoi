@@ -1,0 +1,189 @@
+// src/lib/locales.ts
+
+export type Locale = {
+  // Shell
+  lang: string
+  skipLink: string
+  pageTitle: string
+
+  // App.svelte — guest banner + footer
+  guestBanner: (opts: { name: string; salutation: string; appellation: string }) => string
+  footerTagline: string
+
+  // Hero.svelte
+  heroAriaLabel: string
+  heroSubheading: string
+  countdown: {
+    days: string
+    hours: string
+    minutes: string
+    seconds: string
+    ariaLabel: (d: number, h: number, m: number, s: number) => string
+  }
+
+  // Story.svelte
+  storyImageAlt: (n: number) => string
+
+  // Gallery.svelte
+  galleryTitle: string
+  galleryAriaLabel: string
+  galleryImageAlt: (n: number) => string
+
+  // Locations.svelte
+  locationsTitle: string
+  eventType: string
+  hcmDate: string
+  hanoiDate: string
+  mapButton: string
+  hcmMapAriaLabel: string
+  hanoiMapAriaLabel: string
+
+  // RSVP.svelte
+  rsvpTitle: string
+  rsvpSubtitle: (opts: { salutation: string; appellation: string }) => string
+  rsvpThankYouTitle: string
+  rsvpThankYouMsg: string
+  nameLabel: string
+  namePlaceholder: string
+  nameError: string
+  nameTooLong: string
+  attendanceLabel: string
+  attendanceYes: string
+  attendanceNo: string
+  attendanceMaybe: string
+  guestsLabel: string
+  guestsError: string
+  cityLabel: string
+  cityHCM: string
+  cityHanoi: string
+  cityBoth: string
+  confirmByLabel: string
+  confirmByError: string
+  submitBtn: string
+  submittingBtn: string
+
+  // AudioPlayer.svelte
+  audioPlay: string
+  audioPause: string
+}
+
+export const vi: Locale = {
+  lang: 'vi',
+  skipLink: 'Chuyển tới nội dung chính',
+  pageTitle: 'Thiệp Cưới — Bé Hy & Bé Di',
+  guestBanner: ({ name, salutation, appellation }) =>
+    `Kính mời${salutation ? ` ${salutation}` : ''} ${name} tới dự lễ cưới của chúng ${appellation}!`,
+  footerTagline: '© 2026 - Hẹn bạn nha',
+
+  heroAriaLabel: 'Thiệp cưới Bé Hy và Bé Di',
+  heroSubheading: 'We are getting married',
+  countdown: {
+    days: 'Ngày',
+    hours: 'Giờ',
+    minutes: 'Phút',
+    seconds: 'Giây',
+    ariaLabel: (d, h, m, s) =>
+      `Đếm ngược: ${d} ngày, ${h} giờ, ${m} phút, ${s} giây đến ngày cưới`,
+  },
+
+  storyImageAlt: (n) => `Kỷ niệm ${n}`,
+
+  galleryTitle: 'Kỷ Niệm',
+  galleryAriaLabel: 'Thư viện ảnh cưới',
+  galleryImageAlt: (n) => `Ảnh cưới ${n}`,
+
+  locationsTitle: 'Sự Kiện',
+  eventType: 'Tiệc Cưới',
+  hcmDate: 'Chủ Nhật, 27 tháng 12 năm 2026',
+  hanoiDate: 'Thứ Ba, 05 tháng 01 năm 2027',
+  mapButton: 'Xem Bản Đồ',
+  hcmMapAriaLabel: 'Xem bản đồ tiệc cưới Hồ Chí Minh (mở trong tab mới)',
+  hanoiMapAriaLabel: 'Xem bản đồ tiệc cưới Hà Nội (mở trong tab mới)',
+
+  rsvpTitle: 'Xác Nhận Tham Dự',
+  rsvpSubtitle: ({ salutation, appellation }) =>
+    `Sự hiện diện của ${salutation || 'bạn'} là niềm vinh hạnh cho gia đình chúng ${appellation}`,
+  rsvpThankYouTitle: 'Cảm ơn bạn!',
+  rsvpThankYouMsg: 'Phản hồi của bạn đã được ghi nhận.',
+  nameLabel: 'Họ và Tên',
+  namePlaceholder: 'Nhập tên của bạn...',
+  nameError: 'Vui lòng nhập tên của bạn.',
+  nameTooLong: 'Tên quá dài (tối đa 100 ký tự).',
+  attendanceLabel: 'Tham dự',
+  attendanceYes: 'Chắc chắn rồi! 🎉',
+  attendanceNo: 'Rất tiếc, mình không thể đến',
+  attendanceMaybe: 'Chưa chắc, mình sẽ xác nhận sau',
+  guestsLabel: 'Số lượng người',
+  guestsError: 'Số người phải từ 1 đến 20.',
+  cityLabel: 'Bạn sẽ tham dự tiệc ở thành phố nào?',
+  cityHCM: 'Hồ Chí Minh – 27.12.2026 (6PM–9PM)',
+  cityHanoi: 'Hà Nội – 05.01.2027 (5PM–8PM)',
+  cityBoth: 'Cả hai!',
+  confirmByLabel: 'Bạn sẽ xác nhận trước ngày…',
+  confirmByError: 'Vui lòng chọn ngày bạn sẽ xác nhận.',
+  submitBtn: 'Gửi Xác Nhận',
+  submittingBtn: 'Đang gửi...',
+
+  audioPlay: 'Bật nhạc nền',
+  audioPause: 'Tắt nhạc nền',
+}
+
+export const en: Locale = {
+  lang: 'en',
+  skipLink: 'Skip to main content',
+  pageTitle: 'Wedding Invitation — Bé Hy & Bé Di',
+  guestBanner: ({ name }) =>
+    `Welcome, ${name}! You are cordially invited to our wedding.`,
+  footerTagline: '© 2026 · See you there',
+
+  heroAriaLabel: 'Wedding invitation for Bé Hy and Bé Di',
+  heroSubheading: 'We are getting married',
+  countdown: {
+    days: 'Days',
+    hours: 'Hours',
+    minutes: 'Minutes',
+    seconds: 'Seconds',
+    ariaLabel: (d, h, m, s) =>
+      `Countdown: ${d} days, ${h} hours, ${m} minutes, ${s} seconds until the wedding`,
+  },
+
+  storyImageAlt: (n) => `Memory ${n}`,
+
+  galleryTitle: 'Memories',
+  galleryAriaLabel: 'Wedding photo gallery',
+  galleryImageAlt: (n) => `Wedding photo ${n}`,
+
+  locationsTitle: 'Events',
+  eventType: 'Wedding Reception',
+  hcmDate: 'Sunday, December 27, 2026',
+  hanoiDate: 'Tuesday, January 05, 2027',
+  mapButton: 'View Map',
+  hcmMapAriaLabel: 'View map for Ho Chi Minh City reception (opens in new tab)',
+  hanoiMapAriaLabel: 'View map for Hanoi reception (opens in new tab)',
+
+  rsvpTitle: 'RSVP',
+  rsvpSubtitle: () => 'Your presence would be our greatest honor.',
+  rsvpThankYouTitle: 'Thank you!',
+  rsvpThankYouMsg: 'Your response has been recorded.',
+  nameLabel: 'Full Name',
+  namePlaceholder: 'Enter your name...',
+  nameError: 'Please enter your name.',
+  nameTooLong: 'Name is too long (max 100 characters).',
+  attendanceLabel: 'Attendance',
+  attendanceYes: 'Absolutely! 🎉',
+  attendanceNo: "Sorry, I can't make it",
+  attendanceMaybe: "Not sure yet, I'll confirm later",
+  guestsLabel: 'Number of guests',
+  guestsError: 'Number of guests must be between 1 and 20.',
+  cityLabel: 'Which reception will you attend?',
+  cityHCM: 'Ho Chi Minh City – Dec 27, 2026 (6PM–9PM)',
+  cityHanoi: 'Hanoi – Jan 05, 2027 (5PM–8PM)',
+  cityBoth: 'Both!',
+  confirmByLabel: "I'll confirm by...",
+  confirmByError: "Please select a date by which you'll confirm.",
+  submitBtn: 'Send RSVP',
+  submittingBtn: 'Sending...',
+
+  audioPlay: 'Play background music',
+  audioPause: 'Pause background music',
+}
