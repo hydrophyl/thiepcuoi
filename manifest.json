@@ -1,0 +1,19 @@
+{
+  "name": "Thiệp Cưới — Bé Hy & Bé Di",
+  "short_name": "Thiệp Cưới",
+  "description": "Chúng tôi xin trân trọng kính mời bạn đến dự lễ cưới.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#CDB4DB",
+  "background_color": "#F8F9FA",
+  "lang": "vi",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ]
+}
