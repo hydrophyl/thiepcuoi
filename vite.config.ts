@@ -5,6 +5,7 @@ import { resolve } from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/thiepcuoi/',
   plugins: [tailwindcss(), svelte()],
 
   // Treat .m4a as a static asset so imports get content-hashed URLs (proper cache busting)

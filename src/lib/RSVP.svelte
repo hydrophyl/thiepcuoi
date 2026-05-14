@@ -45,29 +45,18 @@
     return valid;
   }
 
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZYJcMRxgHgTP1MFbeQTLAJp_iHkG-y12U-Idv4PkmkfReLEwjfvvYcXYS0I05oDjK/exec';
+
   async function handleSubmit() {
     if (!validate()) return;
     loading = true;
     try {
-      const res = await fetch('http://localhost:8000/rsvp', {
+      await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: name.trim(), guests, city, attendance, confirmBy }),
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        const detail = data?.detail;
-        if (Array.isArray(detail)) {
-          detail.forEach((d) => {
-            const field = d.loc?.[d.loc.length - 1];
-            if (field === 'name') errors.name = d.msg;
-            else if (field === 'guests') errors.guests = d.msg;
-            else if (field === 'confirmBy') errors.confirmBy = d.msg;
-          });
-        }
-        loading = false;
-        return;
-      }
     } catch (e) {
       console.error('Error submitting RSVP:', e);
     }
