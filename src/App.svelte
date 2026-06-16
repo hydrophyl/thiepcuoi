@@ -88,7 +88,7 @@
   <footer class="py-8 bg-gray-50 text-center border-t border-gray-200">
     <p class="font-script text-2xl text-gray-600">Đức Duy & Xuân Thy</p>
     <p class="text-xs text-gray-400 mt-2 uppercase tracking-widest">
-      {locale.footerTagline}
+      {locale.footerTagline({salutation})}
     </p>
   </footer>
 </main>

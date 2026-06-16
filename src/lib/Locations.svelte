@@ -3,9 +3,9 @@
   export let locale: Locale;
 </script>
 
-<section class="py-20 bg-gradient-to-t from-pastelBlue/10 to-transparent">
+<section class="py-10 md:py-20 bg-linear-to-t from-pastelBlue/10 to-transparent">
   <div class="max-w-6xl mx-auto px-4">
-    <h2 class="text-fluid-title font-script text-center text-gray-800 mb-16">{locale.locationsTitle}</h2>
+    <h2 class="text-fluid-title font-script text-center text-gray-800">{locale.locationsTitle}</h2>
     
     <div class="flex flex-col md:flex-row gap-8 justify-center items-stretch">
       <!-- Card 1: Ho Chi Minh City -->
@@ -22,7 +22,6 @@
           "Tiệc Cưới" badge: text-blue-700 (#1d4ed8) on white = 6.4:1 contrast — passes WCAG AA.
           Previous text-pastelBlue (#A7C7E7) on white was ~2.5:1 — failed.
         -->
-        <p class="text-sm font-semibold text-blue-700 uppercase tracking-widest mb-4">{locale.eventType}</p>
         <p class="text-gray-600 mb-1">{locale.hcmDate}</p>
         <p class="text-gray-800 font-bold mb-4">6:00 PM – 9:00 PM</p>
         <p class="text-gray-600 italic text-sm">360D Bến Vân Đồn, Phường Vĩnh Hội, Quận 4, TP. Hồ Chí Minh</p>
@@ -51,7 +50,6 @@
           text-purple-600 (#9333ea) on white = 5.2:1 contrast — passes WCAG AA.
           Previous text-pastelLila (#CDB4DB) on white was ~1.85:1 — failed.
         -->
-        <p class="text-sm font-semibold text-purple-600 uppercase tracking-widest mb-4">{locale.eventType}</p>
         <p class="text-gray-600 mb-1">{locale.hanoiDate}</p>
         <p class="text-gray-800 font-bold mb-4">5:00 PM – 8:00 PM</p>
         <p class="text-gray-600 italic text-sm">Trống Đồng Palace, 65 P. Quán Sứ, Trần Hưng Đạo, Cửa Nam, Hà Nội</p>

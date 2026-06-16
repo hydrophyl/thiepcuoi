@@ -8,7 +8,7 @@ export type Locale = {
 
   // App.svelte — guest banner + footer
   guestBanner: (opts: { name: string; salutation: string; appellation: string }) => string
-  footerTagline: string
+  footerTagline: (opts: {salutation: string}) => string
 
   // Hero.svelte
   heroAriaLabel: string
@@ -31,7 +31,6 @@ export type Locale = {
 
   // Locations.svelte
   locationsTitle: string
-  eventType: string
   hcmDate: string
   hanoiDate: string
   mapButton: string
@@ -41,24 +40,24 @@ export type Locale = {
   // RSVP.svelte
   rsvpTitle: string
   rsvpSubtitle: (opts: { salutation: string; appellation: string }) => string
-  rsvpThankYouTitle: (opts: { salutation: string; appellation: string }) => string
+  rsvpThankYouTitle: (opts: { salutation: string }) => string
   rsvpThankYouMsg: (opts: { salutation: string; appellation: string }) => string
   nameLabel: string
   namePlaceholder: string
   nameError: string
   nameTooLong: string
   attendanceLabel: string
-  attendanceYes: string
-  attendanceNo: string
-  attendanceMaybe: string
+  attendanceYes: (opts: { salutation: string }) => string
+  attendanceNo: (opts: { salutation: string }) => string
+  attendanceMaybe: (opts: { salutation: string }) => string
   guestsLabel: string
   guestsError: string
-  cityLabel: string
+  cityLabel: (opts: { salutation: string }) => string
   cityHCM: string
   cityHanoi: string
   cityBoth: string
-  confirmByLabel: string
-  confirmByError: string
+  confirmByLabel: (opts: { salutation: string }) => string
+  confirmByError: (opts: { salutation: string }) => string
   submitBtn: string
   submittingBtn: string
 
@@ -72,8 +71,8 @@ export const vi: Locale = {
   skipLink: 'Chuyển tới nội dung chính',
   pageTitle: 'Thiệp Cưới — Đức Duy & Xuân Thy',
   guestBanner: ({ name, salutation, appellation }) =>
-    `Kính mời${salutation ? ` ${salutation}` : ''} ${name} tới dự lễ cưới của chúng ${appellation}!`,
-  footerTagline: '© 2026 - Hẹn bạn nha',
+    `Kính mời${salutation ? ` ${salutation}` : ''} ${name} tới dự lễ cưới của ${appellation}!`,
+  footerTagline: ({salutation}) => `© 2026 - Hẹn ${salutation} nha`,
 
   heroAriaLabel: 'Thiệp cưới Bé Hy và Bé Di',
   heroSubheading: 'Chúng mình sắp kết hôn',
@@ -92,8 +91,7 @@ export const vi: Locale = {
   galleryAriaLabel: 'Thư viện ảnh cưới',
   galleryImageAlt: (n) => `Ảnh cưới ${n}`,
 
-  locationsTitle: 'Sự Kiện',
-  eventType: 'Tiệc Cưới',
+  locationsTitle: 'Sự kiện',
   hcmDate: 'Chủ Nhật, 27 tháng 12 năm 2026',
   hanoiDate: 'Thứ Ba, 05 tháng 01 năm 2027',
   mapButton: 'Xem Bản Đồ',
@@ -102,25 +100,25 @@ export const vi: Locale = {
 
   rsvpTitle: 'Xác Nhận',
   rsvpSubtitle: ({ salutation, appellation }) =>
-    `Sự hiện diện của ${salutation || 'bạn'} là niềm vinh hạnh cho gia đình chúng ${appellation}`,
-  rsvpThankYouTitle: ({ salutation, appellation }) => `Cảm ơn ${salutation || 'bạn'}!`,
-  rsvpThankYouMsg: ({ salutation, appellation }) => `Cảm ơn vì đã dành thời gian quý báu của ${salutation || 'bạn'} cho chúng ${appellation}`,
+    `Sự hiện diện của ${salutation || 'bạn'} là niềm vinh hạnh cho gia đình ${appellation}`,
+  rsvpThankYouTitle: ({ salutation }) => `Cảm ơn ${salutation || 'bạn'}!`,
+  rsvpThankYouMsg: ({ salutation, appellation }) => `Cảm ơn vì đã dành thời gian quý báu của ${salutation || 'bạn'} cho ${appellation}`,
   nameLabel: 'Họ và Tên',
-  namePlaceholder: 'Nhập tên của bạn...',
+  namePlaceholder: 'Nhập tên ...',
   nameError: 'Vui lòng nhập tên của bạn.',
   nameTooLong: 'Tên quá dài (tối đa 100 ký tự).',
   attendanceLabel: 'Tham dự',
-  attendanceYes: 'Chắc chắn rồi! 🎉',
-  attendanceNo: 'Rất tiếc, mình không thể đến',
-  attendanceMaybe: 'Chưa chắc, mình sẽ xác nhận sau',
+  attendanceYes: ({ salutation }) => `Chắc chắn rồi, ${salutation || 'mình'} sẽ tới!`,
+  attendanceNo: ({ salutation }) => `Rất tiếc, ${salutation || 'mình'} không thể đến`,
+  attendanceMaybe: ({ salutation }) => `Chưa chắc, ${salutation || 'mình'} sẽ xác nhận sau`,
   guestsLabel: 'Số lượng người',
   guestsError: 'Số người phải từ 1 đến 20.',
-  cityLabel: 'Bạn sẽ tham dự tiệc ở thành phố nào?',
-  cityHCM: 'Hồ Chí Minh – 27.12.2026 (6PM–9PM)',
+  cityLabel: ({ salutation }) => `${salutation || 'Bạn'} sẽ tham dự tiệc ở thành phố nào?`,
+  cityHCM: 'Hồ Chí Minh – 27.12.2026 (11AM–1PM)',
   cityHanoi: 'Hà Nội – 05.01.2027 (5PM–8PM)',
   cityBoth: 'Cả hai!',
-  confirmByLabel: 'Bạn sẽ xác nhận trước ngày…',
-  confirmByError: 'Vui lòng chọn ngày bạn sẽ xác nhận.',
+  confirmByLabel: ({ salutation }) => `${salutation || 'Bạn'} sẽ xác nhận trước ngày…`,
+  confirmByError: ({ salutation }) => `Vui lòng chọn ngày ${salutation || 'bạn'} sẽ xác nhận.`,
   submitBtn: 'Gửi',
   submittingBtn: 'Đang gửi...',
 
@@ -134,7 +132,7 @@ export const en: Locale = {
   pageTitle: 'Wedding Invitation — Đức Duy & Xuân Thy',
   guestBanner: ({ name }) =>
     `Welcome, ${name}! You are cordially invited to our wedding.`,
-  footerTagline: '© 2026 · See you there',
+  footerTagline:() => '© 2026 · See you there',
 
   heroAriaLabel: 'Wedding invitation for Bé Hy and Bé Di',
   heroSubheading: 'We are getting married',
@@ -154,7 +152,6 @@ export const en: Locale = {
   galleryImageAlt: (n) => `Wedding photo ${n}`,
 
   locationsTitle: 'Events',
-  eventType: 'Wedding Reception',
   hcmDate: 'Sunday, December 27, 2026',
   hanoiDate: 'Tuesday, January 05, 2027',
   mapButton: 'View Map',
@@ -170,17 +167,17 @@ export const en: Locale = {
   nameError: 'Please enter your name.',
   nameTooLong: 'Name is too long (max 100 characters).',
   attendanceLabel: 'Attendance',
-  attendanceYes: 'Absolutely! 🎉',
-  attendanceNo: "Sorry, I can't make it",
-  attendanceMaybe: "Not sure yet, I'll confirm later",
+  attendanceYes: () => `Absolutely!`,
+  attendanceNo: () => `Sorry, I can't make it`,
+  attendanceMaybe: () => `Not sure yet, I'll confirm later`,
   guestsLabel: 'Number of guests',
   guestsError: 'Number of guests must be between 1 and 20.',
-  cityLabel: 'Which reception will you attend?',
-  cityHCM: 'Ho Chi Minh City – Dec 27, 2026 (6PM–9PM)',
+  cityLabel: () => 'Which reception will you attend?',
+  cityHCM: 'Ho Chi Minh City – Dec 27, 2026 (11AM–1PM)',
   cityHanoi: 'Hanoi – Jan 05, 2027 (5PM–8PM)',
   cityBoth: 'Both!',
-  confirmByLabel: "I'll confirm by...",
-  confirmByError: "Please select a date by which you'll confirm.",
+  confirmByLabel: () => "I'll confirm by...",
+  confirmByError: () => "Please select a date by which you'll confirm.",
   submitBtn: 'Send Confirmation',
   submittingBtn: 'Sending...',
 

@@ -38,7 +38,7 @@
     }
 
     if (attendance === 'maybe' && !confirmBy) {
-      errors.confirmBy = locale.confirmByError;
+      errors.confirmBy = locale.confirmByError({salutation});
       valid = false;
     }
 
@@ -66,8 +66,8 @@
 </script>
 
 <section class="py-24 bg-white relative overflow-hidden">
-  <div class="absolute top-[-50px] right-[-50px] w-64 h-64 bg-pastelLila/10 rounded-full blur-3xl"></div>
-  <div class="absolute bottom-[-50px] left-[-50px] w-64 h-64 bg-pastelBlue/10 rounded-full blur-3xl"></div>
+  <div class="absolute -top-12.5 -right-12.5 w-64 h-64 bg-pastelLila/10 rounded-full blur-3xl"></div>
+  <div class="absolute -bottom-12.5 -left-12.5 w-64 h-64 bg-pastelBlue/10 rounded-full blur-3xl"></div>
   
   <div class="max-w-2xl mx-auto px-4 relative z-10">
     <div class="bg-white/70 backdrop-blur-md border border-gray-100 p-8 md:p-12 rounded-3xl shadow-xl">
@@ -77,7 +77,7 @@
       {#if submitted}
         <div class="text-center py-10 animate-fade-in-up">
             <svg class="w-16 h-16 text-pastelLila mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            <h3 class="text-2xl font-semibold mb-2">{locale.rsvpThankYouTitle({ salutation, appellation })}</h3>
+            <h3 class="text-2xl font-semibold mb-2">{locale.rsvpThankYouTitle({ salutation })}</h3>
             <p class="text-gray-600">{locale.rsvpThankYouMsg({ salutation, appellation })}</p>
         </div>
       {:else}
@@ -103,9 +103,9 @@
                 bind:value={attendance}
                 class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pastelBlue focus:border-transparent outline-none transition-all"
               >
-                <option value="yes">{locale.attendanceYes}</option>
-                <option value="no">{locale.attendanceNo}</option>
-                <option value="maybe">{locale.attendanceMaybe}</option>
+                <option value="yes">{locale.attendanceYes({ salutation })}</option>
+                <option value="no">{locale.attendanceNo({ salutation })}</option>
+                <option value="maybe">{locale.attendanceMaybe({ salutation })}</option>
               </select>
             </div>
             
@@ -126,7 +126,7 @@
             </div>
 
             <div class="md:col-span-2">
-              <label for="city" class="block text-sm font-medium text-gray-700 mb-1">{locale.cityLabel}</label>
+              <label for="city" class="block text-sm font-medium text-gray-700 mb-1">{locale.cityLabel({ salutation })}</label>
               <select 
                 id="city" 
                 bind:value={city}
@@ -141,7 +141,7 @@
 
             {#if attendance === 'maybe'}
             <div class="md:col-span-2">
-              <label for="confirmBy" class="block text-sm font-medium text-gray-700 mb-1">{locale.confirmByLabel}</label>
+              <label for="confirmBy" class="block text-sm font-medium text-gray-700 mb-1">{locale.confirmByLabel({ salutation })}</label>
               <input
                 type="date"
                 id="confirmBy"

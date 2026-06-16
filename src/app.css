@@ -90,7 +90,7 @@ a,
   font-size: clamp(3rem, 5vw + 1.5rem, 6rem);
 }
 
-/* Section titles (Our Story, Kỷ Niệm, Sự Kiện, Xác Nhận…) — 32px → 56px */
+/* Section titles — 32px → 56px */
 .text-fluid-title {
   font-size: clamp(2rem, 3.5vw + 0.75rem, 3.5rem);
 }

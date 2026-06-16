@@ -2,7 +2,7 @@
   import story_bg from '../assets/edited/IMG_8836.jpg';
 </script>
 
-<section class="py-20 relative overflow-hidden">
+<section class="py-10 md:py-20 relative overflow-hidden">
   <!-- Background: image with a light overlay for text readability -->
   <img
     src={story_bg}
