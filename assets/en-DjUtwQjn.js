@@ -1,1 +1,0 @@
-import{t as e}from"./App-CMicGej3.js";import{h as t}from"./vendor-svelte-CroaPetT.js";t(e,{target:document.getElementById(`app`),props:{lang:`en`}});

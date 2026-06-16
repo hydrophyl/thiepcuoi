@@ -1,0 +1,1 @@
+var e=`/thiepcuoi/assets/10-BfV_ERcb.jpg`;export{e as default};
