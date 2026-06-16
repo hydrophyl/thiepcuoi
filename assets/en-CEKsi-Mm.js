@@ -1,0 +1,1 @@
+import{t as e}from"./App-CtGg8zVC.js";import{m as t}from"./vendor-svelte-DNPjjSCO.js";t(e,{target:document.getElementById(`app`),props:{lang:`en`}});
