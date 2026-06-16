@@ -51,13 +51,8 @@
 
   <!-- Content sits above the image -->
   <div class="relative z-10 max-w-3xl animate-fade-in-up">
-    <h2 class="tracking-widest text-fluid-lg text-gray-500 mb-4">{locale.heroSubheading}</h2>
-    <h1 class="text-fluid-hero font-script text-gray-800 mb-6 drop-shadow-sm">Bé Hy & Bé Di</h1>
-    <div class="flex flex-col sm:flex-row gap-3 justify-center items-center mb-10 text-gray-600">
-      <span class="text-fluid-lg">🇻🇳 Hồ Chí Minh · 27.12.2026</span>
-      <span class="hidden sm:inline text-gray-400">·</span>
-      <span class="text-fluid-lg">🇻🇳 Hà Nội · 05.01.2027</span>
-    </div>
+    <h2 class="tracking-widest text-fluid-lg mb-4">{locale.heroSubheading}</h2>
+    <h1 class="text-fluid-hero font-script text-gray-800 mb-4 drop-shadow-sm">Duy & Thy</h1>
 
     <!--
       role="timer": tells screen readers this is a countdown clock.
@@ -70,20 +65,16 @@
       class="flex gap-4 md:gap-8 justify-center mt-8 text-gray-700"
     >
       <div class="flex flex-col items-center">
-        <span class="text-fluid-count font-script" aria-hidden="true">{days}</span>
+        <span class="flex justify-center items-center text-fluid-count font-script bg-green-100 w-22 h-22 rounded-xl opacity-80" aria-hidden="true">{days}</span>
         <span class="text-xs uppercase tracking-wider mt-1">{locale.countdown.days}</span>
       </div>
       <div class="flex flex-col items-center">
-        <span class="text-fluid-count font-script" aria-hidden="true">{hours}</span>
+        <span class="flex justify-center items-center text-fluid-count font-script bg-green-100 w-22 h-22 rounded-xl opacity-80" aria-hidden="true">{hours}</span>
         <span class="text-xs uppercase tracking-wider mt-1">{locale.countdown.hours}</span>
       </div>
       <div class="flex flex-col items-center">
-        <span class="text-fluid-count font-script" aria-hidden="true">{minutes}</span>
+        <span class="flex justify-center items-center text-fluid-count font-script bg-green-100 w-22 h-22 rounded-xl opacity-80" aria-hidden="true">{minutes}</span>
         <span class="text-xs uppercase tracking-wider mt-1">{locale.countdown.minutes}</span>
-      </div>
-      <div class="flex flex-col items-center">
-        <span class="text-fluid-count font-script" aria-hidden="true">{seconds}</span>
-        <span class="text-xs uppercase tracking-wider mt-1">{locale.countdown.seconds}</span>
       </div>
     </div>
   </div>

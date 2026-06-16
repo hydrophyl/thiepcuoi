@@ -7,7 +7,7 @@
   --color-pastelBlue: #A7C7E7;
   --color-pastelLila: #CDB4DB;
   --color-pastelWhite: #F8F9FA;
-  --font-script: "Fleur De Leah", cursive;
+  --font-script: "Alex Brush", cursive;
   --font-sans: "Be Vietnam Pro", sans-serif;
 }
 
@@ -20,7 +20,7 @@ body {
 }
 
 h1, h2, h3, .font-script {
-  font-family: 'Fleur De Leah', cursive;
+  font-family: 'Alex Brush', cursive;
 }
 
 /* Vietnamese guest name must NOT inherit the script font */

@@ -41,8 +41,8 @@ export type Locale = {
   // RSVP.svelte
   rsvpTitle: string
   rsvpSubtitle: (opts: { salutation: string; appellation: string }) => string
-  rsvpThankYouTitle: string
-  rsvpThankYouMsg: string
+  rsvpThankYouTitle: (opts: { salutation: string; appellation: string }) => string
+  rsvpThankYouMsg: (opts: { salutation: string; appellation: string }) => string
   nameLabel: string
   namePlaceholder: string
   nameError: string
@@ -70,13 +70,13 @@ export type Locale = {
 export const vi: Locale = {
   lang: 'vi',
   skipLink: 'Chuyển tới nội dung chính',
-  pageTitle: 'Thiệp Cưới — Bé Hy & Bé Di',
+  pageTitle: 'Thiệp Cưới — Đức Duy & Xuân Thy',
   guestBanner: ({ name, salutation, appellation }) =>
     `Kính mời${salutation ? ` ${salutation}` : ''} ${name} tới dự lễ cưới của chúng ${appellation}!`,
   footerTagline: '© 2026 - Hẹn bạn nha',
 
   heroAriaLabel: 'Thiệp cưới Bé Hy và Bé Di',
-  heroSubheading: 'We are getting married',
+  heroSubheading: 'Chúng mình sắp kết hôn',
   countdown: {
     days: 'Ngày',
     hours: 'Giờ',
@@ -88,7 +88,7 @@ export const vi: Locale = {
 
   storyImageAlt: (n) => `Kỷ niệm ${n}`,
 
-  galleryTitle: 'Kỷ Niệm',
+  galleryTitle: 'Gallery',
   galleryAriaLabel: 'Thư viện ảnh cưới',
   galleryImageAlt: (n) => `Ảnh cưới ${n}`,
 
@@ -100,11 +100,11 @@ export const vi: Locale = {
   hcmMapAriaLabel: 'Xem bản đồ tiệc cưới Hồ Chí Minh (mở trong tab mới)',
   hanoiMapAriaLabel: 'Xem bản đồ tiệc cưới Hà Nội (mở trong tab mới)',
 
-  rsvpTitle: 'Xác Nhận Tham Dự',
+  rsvpTitle: 'Xác Nhận',
   rsvpSubtitle: ({ salutation, appellation }) =>
     `Sự hiện diện của ${salutation || 'bạn'} là niềm vinh hạnh cho gia đình chúng ${appellation}`,
-  rsvpThankYouTitle: 'Cảm ơn bạn!',
-  rsvpThankYouMsg: 'Phản hồi của bạn đã được ghi nhận.',
+  rsvpThankYouTitle: ({ salutation, appellation }) => `Cảm ơn ${salutation || 'bạn'}!`,
+  rsvpThankYouMsg: ({ salutation, appellation }) => `Cảm ơn vì đã dành thời gian quý báu của ${salutation || 'bạn'} cho chúng ${appellation}`,
   nameLabel: 'Họ và Tên',
   namePlaceholder: 'Nhập tên của bạn...',
   nameError: 'Vui lòng nhập tên của bạn.',
@@ -121,7 +121,7 @@ export const vi: Locale = {
   cityBoth: 'Cả hai!',
   confirmByLabel: 'Bạn sẽ xác nhận trước ngày…',
   confirmByError: 'Vui lòng chọn ngày bạn sẽ xác nhận.',
-  submitBtn: 'Gửi Xác Nhận',
+  submitBtn: 'Gửi',
   submittingBtn: 'Đang gửi...',
 
   audioPlay: 'Bật nhạc nền',
@@ -131,7 +131,7 @@ export const vi: Locale = {
 export const en: Locale = {
   lang: 'en',
   skipLink: 'Skip to main content',
-  pageTitle: 'Wedding Invitation — Bé Hy & Bé Di',
+  pageTitle: 'Wedding Invitation — Đức Duy & Xuân Thy',
   guestBanner: ({ name }) =>
     `Welcome, ${name}! You are cordially invited to our wedding.`,
   footerTagline: '© 2026 · See you there',
@@ -149,7 +149,7 @@ export const en: Locale = {
 
   storyImageAlt: (n) => `Memory ${n}`,
 
-  galleryTitle: 'Memories',
+  galleryTitle: 'Gallery',
   galleryAriaLabel: 'Wedding photo gallery',
   galleryImageAlt: (n) => `Wedding photo ${n}`,
 
@@ -161,10 +161,10 @@ export const en: Locale = {
   hcmMapAriaLabel: 'View map for Ho Chi Minh City reception (opens in new tab)',
   hanoiMapAriaLabel: 'View map for Hanoi reception (opens in new tab)',
 
-  rsvpTitle: 'RSVP',
+  rsvpTitle: 'Confirmation',
   rsvpSubtitle: () => 'Your presence would be our greatest honor.',
-  rsvpThankYouTitle: 'Thank you!',
-  rsvpThankYouMsg: 'Your response has been recorded.',
+  rsvpThankYouTitle: () => 'Thank you!',
+  rsvpThankYouMsg: () => 'Your response has been recorded.',
   nameLabel: 'Full Name',
   namePlaceholder: 'Enter your name...',
   nameError: 'Please enter your name.',
@@ -181,7 +181,7 @@ export const en: Locale = {
   cityBoth: 'Both!',
   confirmByLabel: "I'll confirm by...",
   confirmByError: "Please select a date by which you'll confirm.",
-  submitBtn: 'Send RSVP',
+  submitBtn: 'Send Confirmation',
   submittingBtn: 'Sending...',
 
   audioPlay: 'Play background music',

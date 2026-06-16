@@ -36,3 +36,6 @@ wheels/
 
 # database
 *.db
+
+.weave/
+edited/
