@@ -1,0 +1,1 @@
+var e=`/thiepcuoi/assets/16-CwI_5GTM.jpg`;export{e as default};

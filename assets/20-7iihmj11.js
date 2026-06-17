@@ -1,1 +1,0 @@
-var e=`/thiepcuoi/assets/20-Cvk6xM4J.jpg`;export{e as default};
