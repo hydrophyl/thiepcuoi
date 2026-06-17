@@ -3,6 +3,8 @@
   import { onMount } from 'svelte';
 
   export let locale: Locale;
+  export let appellation = 'chúng mình';
+  export let salutation = 'bạn';
 
   // ── Load numbered images from src/assets/gallery/ ─────────────────────
   const modules = import.meta.glob('../assets/gallery/*.{jpg,jpeg,png,webp}', {
@@ -25,12 +27,31 @@
   }
 
   // ── Quotes ────────────────────────────────────────────────────────────
-  const quotes = [
-    '9 years. Countless memories. One incredible journey…',
-    "We're turning the page to a new chapter and become Husband & Wife",
-    'You have been the heartbeat of our eight-year journey, and your support is the soundtrack to our story',
-    'Traveling to Vietnam for our wedding is a long way — especially during a season meant for rest and family here in Europe. Please know that while we would be overjoyed to celebrate with you at either (or both!) of our weddings, we truly understand if the distance is too great. Your love and well-wishes have already warmed our hearts more than words can say. 🩵',
+  const enQuotes = [
+    '9 years together. Countless memories. One meaningful journey.',
+    "We're turning the page to a new chapter as we become husband and wife.",
+    "You've been part of our story over the years, and your presence and support have meant more to us than we can fully express.",
+    "We know that traveling to Vietnam for our wedding is a long journey, especially during a time often reserved for rest and family in Europe. While we would be truly happy to celebrate with you—at either or both of our ceremonies—we completely understand if it's not possible.\n\nYour kind thoughts and well wishes already mean a great deal to us.",
   ];
+
+  function weTerm(app: string): string {
+    if(app){return app}
+    return 'chúng mình';
+  }
+
+  function capitalize(s: string): string {
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  $: we = locale.lang === 'vi' ? weTerm(appellation) : '';
+  $: viQuotes = [
+    '9 năm bên nhau là một hành trình đầy ý nghĩa.',
+    `${capitalize(we)} sắp đánh dấu một cột mốc mới trên hành trình tình yêu để trở thành vợ chồng.`,
+    `Cảm ơn vì ${(salutation || 'bạn')} đã luôn đồng hành cùng ${we} trong suốt những năm qua. Sự hiện diện và ủng hộ của ${salutation || 'bạn'} dành cho ${we} thực sự quý giá hơn những gì ${we} có thể diễn tả.`,
+    `Mong ${(salutation || 'bạn')} có thể dành chút thời gian tham dự lễ cưới của ${we}`
+  ];
+
+  $: quotes = locale.lang === 'en' ? enQuotes : viQuotes;
 
   // ── Carousel state ────────────────────────────────────────────────────
   let container: HTMLDivElement;
@@ -89,6 +110,17 @@
     </p>
   </section>
 {:else}
+ <!-- ── Quotes Section ──────────────────────────────────────────────── -->
+  <section class="quotes-section">
+    <div class="quotes-frame">
+      {#each quotes as quote, i}
+        <p class="quote-text">{quote}</p>
+        {#if i < quotes.length - 1}
+          <span class="quote-divider">✦</span>
+        {/if}
+      {/each}
+    </div>
+  </section>
   <!-- ── Image Carousel ──────────────────────────────────────────────── -->
   <section class="gallery-carousel" aria-label={locale.galleryAriaLabel}>
     <div class="carousel-wrapper">
@@ -130,18 +162,6 @@
           </svg>
         </button>
       {/if}
-    </div>
-  </section>
-
-  <!-- ── Quotes Section ──────────────────────────────────────────────── -->
-  <section class="quotes-section">
-    <div class="quotes-frame">
-      {#each quotes as quote, i}
-        <p class="quote-text">{quote}</p>
-        {#if i < quotes.length - 1}
-          <span class="quote-divider">✦</span>
-        {/if}
-      {/each}
     </div>
   </section>
 {/if}

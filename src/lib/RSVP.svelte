@@ -2,7 +2,7 @@
   import type { Locale } from './locales';
 
   export let guestName = '';
-  export let appellation = 'tôi';
+  export let appellation = 'chúng tôi';
   export let salutation = '';
   export let locale: Locale;
 
@@ -71,7 +71,7 @@
   
   <div class="max-w-2xl mx-auto px-4 relative z-10">
     <div class="bg-white/70 backdrop-blur-md border border-gray-100 p-8 md:p-12 rounded-3xl shadow-xl">
-      <h2 class="text-fluid-title font-script text-center text-gray-800 mb-4">{locale.rsvpTitle}</h2>
+      <h2 class="text-4xl md:text-6xl font-script text-center text-gray-800 mb-4">{locale.rsvpTitle}</h2>
       <p class="text-center text-gray-500 mb-8">{locale.rsvpSubtitle({ salutation, appellation })}</p>
       
       {#if submitted}

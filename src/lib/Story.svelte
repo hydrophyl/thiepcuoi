@@ -16,15 +16,15 @@
   <div class="relative z-10 max-w-4xl mx-auto px-4">
     <!-- 8-year intro -->
     <div class="text-center mb-16">
-      <h2 class="text-fluid-title text-gray-800 mb-4">Our Story</h2>
-      <p class="text-fluid-sub text-gray-600 leading-relaxed">
+      <h2 class="text-4xl md:text-6xl text-gray-800 mb-4">Our Story</h2>
+      <p class="text-xl md:text-3xl text-gray-600 leading-relaxed">
         9 years. Countless memories. One incredible journey…
       </p>
     </div>
 
     <!-- Turning the page -->
     <div class="text-center mb-16">
-      <p class="text-fluid-sub text-gray-700 leading-relaxed">
+      <p class="text-xl md:text-3xl text-gray-700 leading-relaxed">
         This year, we're turning the page to a special chapter — to become <span class="font-semibold not-italic text-gray-900">Husband &amp; Wife</span>
       </p>
     </div>

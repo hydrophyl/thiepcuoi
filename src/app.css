@@ -9,6 +9,7 @@
   --color-pastelWhite: #F8F9FA;
   --font-script: "Alex Brush", cursive;
   --font-sans: "Be Vietnam Pro", sans-serif;
+  --animate-fade-in-up: fade-in-up 1.5s ease-out forwards;
 }
 
 /* ─── Base ──────────────────────────────────────────────────────────────────── */
@@ -82,32 +83,15 @@ a,
   min-width: 44px;
 }
 
-/* ─── Fluid Typography Scale (clamp: smooth interpolation, no stepped jumps) ── */
-/* Replaces paired `text-Xnl md:text-Ynl` Tailwind classes across components     */
-
-/* Hero couple name — 48px (375px screen) → 96px (1280px+) */
-.text-fluid-hero {
-  font-size: clamp(3rem, 5vw + 1.5rem, 6rem);
+/* ─── Animations ─────────────────────────────────────────────────────────────── */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Section titles — 32px → 56px */
-.text-fluid-title {
-  font-size: clamp(2rem, 3.5vw + 0.75rem, 3.5rem);
-}
-
-/* Subtitles and pullquotes — 22px → 32px */
-.text-fluid-sub {
-  font-size: clamp(1.375rem, 2vw + 0.625rem, 2rem);
-}
-
-/* Countdown numbers — 30px → 48px */
-.text-fluid-count {
-  font-size: clamp(1.875rem, 3vw + 0.75rem, 3rem);
-}
-
-/* Lead body / date lines — 16px → 20px */
-.text-fluid-lg {
-  font-size: clamp(1rem, 1vw + 0.625rem, 1.25rem);
+/* ─── Page-level smooth scrolling for anchor navigation ─────────────────────── */
+html {
+  scroll-behavior: smooth;
 }
 
 /* ─── Reduced Motion (WCAG 2.3.3) ───────────────────────────────────────────── */
@@ -122,6 +106,12 @@ a,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  /* fade-in-up uses animation-fill-mode: forwards; never leave it invisible */
+  .animate-fade-in-up {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }
 

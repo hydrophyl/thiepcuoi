@@ -12,7 +12,7 @@
 
   const weddingDate = new Date('2026-12-27T18:00:00')
   let guestName = ''
-  let appellation = 'tôi' // default self-reference; override via ?appellation=con|cháu|em|…
+  let appellation = ' chúng tôi' // default self-reference; override via ?appellation=con|cháu|em|…
   let salutation = '' // how to address the guest; override via ?salutation=ông|bà|anh|chị|em|cháu|…
 
   /** Strip all HTML tags from a string — browser-native, no Node.js deps. */
@@ -70,10 +70,10 @@
 
   <Hero
     {weddingDate}
-    {locale}
+    {locale} {appellation}
   />
-  <Gallery {locale} />
   <Locations {locale} />
+  <Gallery {locale} {appellation} {salutation} />
   <RSVP
     {guestName}
     {appellation}
@@ -93,8 +93,3 @@
   </footer>
 </main>
 
-<style>
-  :global(html) {
-    scroll-behavior: smooth;
-  }
-</style>

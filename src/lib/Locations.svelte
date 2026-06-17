@@ -5,7 +5,7 @@
 
 <section class="py-10 md:py-20 bg-linear-to-t from-pastelBlue/10 to-transparent">
   <div class="max-w-6xl mx-auto px-4">
-    <h2 class="text-fluid-title font-script text-center text-gray-800">{locale.locationsTitle}</h2>
+    <h2 class="text-4xl md:text-6xl font-script text-center text-gray-800">{locale.locationsTitle}</h2>
     
     <div class="flex flex-col md:flex-row gap-8 justify-center items-stretch">
       <!-- Card 1: Ho Chi Minh City -->
@@ -23,7 +23,7 @@
           Previous text-pastelBlue (#A7C7E7) on white was ~2.5:1 — failed.
         -->
         <p class="text-gray-600 mb-1">{locale.hcmDate}</p>
-        <p class="text-gray-800 font-bold mb-4">6:00 PM – 9:00 PM</p>
+        <p class="text-gray-800 font-bold mb-4">11:00 AM – 3:00 PM</p>
         <p class="text-gray-600 italic text-sm">360D Bến Vân Đồn, Phường Vĩnh Hội, Quận 4, TP. Hồ Chí Minh</p>
         <div class="mt-auto pt-6 w-full">
           <a

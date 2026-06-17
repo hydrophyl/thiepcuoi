@@ -1,5 +1,7 @@
 // src/lib/locales.ts
-
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 export type Locale = {
   // Shell
   lang: string
@@ -8,11 +10,11 @@ export type Locale = {
 
   // App.svelte — guest banner + footer
   guestBanner: (opts: { name: string; salutation: string; appellation: string }) => string
-  footerTagline: (opts: {salutation: string}) => string
+  footerTagline: (opts: { salutation: string }) => string
 
   // Hero.svelte
   heroAriaLabel: string
-  heroSubheading: string
+  heroSubheading: (opts: { appellation: string }) => string
   countdown: {
     days: string
     hours: string
@@ -72,10 +74,10 @@ export const vi: Locale = {
   pageTitle: 'Thiệp Cưới — Đức Duy & Xuân Thy',
   guestBanner: ({ name, salutation, appellation }) =>
     `Kính mời${salutation ? ` ${salutation}` : ''} ${name} tới dự lễ cưới của ${appellation}!`,
-  footerTagline: ({salutation}) => `© 2026 - Hẹn ${salutation} nha`,
+  footerTagline: ({ salutation }) => `© 2026 - Hẹn ${salutation} nha`,
 
   heroAriaLabel: 'Thiệp cưới Bé Hy và Bé Di',
-  heroSubheading: 'Chúng mình sắp kết hôn',
+  heroSubheading: ({ appellation }) => `${capitalize(appellation)} sắp kết hôn rồi!`,
   countdown: {
     days: 'Ngày',
     hours: 'Giờ',
@@ -114,7 +116,7 @@ export const vi: Locale = {
   guestsLabel: 'Số lượng người',
   guestsError: 'Số người phải từ 1 đến 20.',
   cityLabel: ({ salutation }) => `${salutation || 'Bạn'} sẽ tham dự tiệc ở thành phố nào?`,
-  cityHCM: 'Hồ Chí Minh – 27.12.2026 (11AM–1PM)',
+  cityHCM: 'Hồ Chí Minh – 27.12.2026 (11AM–3PM)',
   cityHanoi: 'Hà Nội – 05.01.2027 (5PM–8PM)',
   cityBoth: 'Cả hai!',
   confirmByLabel: ({ salutation }) => `${salutation || 'Bạn'} sẽ xác nhận trước ngày…`,
@@ -132,10 +134,10 @@ export const en: Locale = {
   pageTitle: 'Wedding Invitation — Đức Duy & Xuân Thy',
   guestBanner: ({ name }) =>
     `Welcome, ${name}! You are cordially invited to our wedding.`,
-  footerTagline:() => '© 2026 · See you there',
+  footerTagline: () => '© 2026 · See you there',
 
   heroAriaLabel: 'Wedding invitation for Bé Hy and Bé Di',
-  heroSubheading: 'We are getting married',
+  heroSubheading: () => 'We are getting married',
   countdown: {
     days: 'Days',
     hours: 'Hours',
@@ -173,7 +175,7 @@ export const en: Locale = {
   guestsLabel: 'Number of guests',
   guestsError: 'Number of guests must be between 1 and 20.',
   cityLabel: () => 'Which reception will you attend?',
-  cityHCM: 'Ho Chi Minh City – Dec 27, 2026 (11AM–1PM)',
+  cityHCM: 'Ho Chi Minh City – Dec 27, 2026 (11AM–3PM)',
   cityHanoi: 'Hanoi – Jan 05, 2027 (5PM–8PM)',
   cityBoth: 'Both!',
   confirmByLabel: () => "I'll confirm by...",
