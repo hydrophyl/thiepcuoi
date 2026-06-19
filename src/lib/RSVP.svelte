@@ -1,67 +1,67 @@
 <script lang="ts">
-  import type { Locale } from './locales';
+  import type { Locale } from './locales'
 
-  export let guestName = '';
-  export let appellation = 'chúng tôi';
-  export let salutation = '';
-  export let locale: Locale;
+  export let guestName = ''
+  export let appellation = 'chúng tôi'
+  export let salutation = ''
+  export let locale: Locale
 
-  let name = '';
-  $: if (!name && guestName) name = guestName;
-  let guests = 1;
-  let city = 'Ho Chi Minh';
-  let attendance = 'yes';
-  let confirmBy = '';
-  let submitted = false;
-  let loading = false;
+  let name = ''
+  $: if (!name && guestName) name = guestName
+  let guests = 1
+  let city = 'Ho Chi Minh'
+  let attendance = 'yes'
+  let confirmBy = ''
+  let submitted = false
+  let loading = false
 
   // --- Validation ---
-  let errors = { name: '', guests: '', confirmBy: '' };
+  let errors = { name: '', guests: '', confirmBy: '' }
 
   function validate() {
-    errors = { name: '', guests: '', confirmBy: '' };
-    let valid = true;
+    errors = { name: '', guests: '', confirmBy: '' }
+    let valid = true
 
     if (!name.trim()) {
-      errors.name = locale.nameError;
-      valid = false;
+      errors.name = locale.nameError
+      valid = false
     } else if (name.trim().length > 100) {
-      errors.name = locale.nameTooLong;
-      valid = false;
+      errors.name = locale.nameTooLong
+      valid = false
     }
 
     if (attendance !== 'no') {
       if (!Number.isInteger(guests) || guests < 1 || guests > 20) {
-        errors.guests = locale.guestsError;
-        valid = false;
+        errors.guests = locale.guestsError
+        valid = false
       }
     }
 
     if (attendance === 'maybe' && !confirmBy) {
-      errors.confirmBy = locale.confirmByError({salutation});
-      valid = false;
+      errors.confirmBy = locale.confirmByError({salutation})
+      valid = false
     }
 
-    return valid;
+    return valid
   }
 
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZYJcMRxgHgTP1MFbeQTLAJp_iHkG-y12U-Idv4PkmkfReLEwjfvvYcXYS0I05oDjK/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZYJcMRxgHgTP1MFbeQTLAJp_iHkG-y12U-Idv4PkmkfReLEwjfvvYcXYS0I05oDjK/exec'
 
   async function handleSubmit() {
-    if (!validate()) return;
-    loading = true;
+    if (!validate()) return
+    loading = true
     try {
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: name.trim(), guests, city, attendance, confirmBy }),
-      });
+      })
     } catch (e) {
-      console.error('Error submitting RSVP:', e);
+      console.error('Error submitting RSVP:', e)
     }
-    loading = false;
-    submitted = true;
+    loading = false
+    submitted = true
   }
 </script>
 
@@ -87,6 +87,7 @@
             <input 
               type="text" 
               id="name" 
+              autocomplete="name"
               bind:value={name}
               class="w-full px-4 py-3 rounded-lg border transition-all outline-none focus:ring-2 focus:ring-pastelBlue focus:border-transparent
                 {errors.name ? 'border-red-400 bg-red-50' : 'border-gray-300'}"
@@ -100,6 +101,7 @@
               <label for="attendance" class="block text-sm font-medium text-gray-700 mb-1">{locale.attendanceLabel}</label>
               <select 
                 id="attendance" 
+                autocomplete="off"
                 bind:value={attendance}
                 class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pastelBlue focus:border-transparent outline-none transition-all"
               >
@@ -114,6 +116,7 @@
               <input 
                 type="number" 
                 id="guests" 
+                autocomplete="off"
                 min="1" 
                 max="20"
                 bind:value={guests}
@@ -129,6 +132,7 @@
               <label for="city" class="block text-sm font-medium text-gray-700 mb-1">{locale.cityLabel({ salutation })}</label>
               <select 
                 id="city" 
+                autocomplete="off"
                 bind:value={city}
                 disabled={attendance === 'no'}
                 class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pastelBlue focus:border-transparent outline-none transition-all disabled:bg-gray-100 disabled:text-gray-400"
@@ -145,6 +149,7 @@
               <input
                 type="date"
                 id="confirmBy"
+                autocomplete="off"
                 bind:value={confirmBy}
                 class="w-full px-4 py-3 rounded-lg border transition-all outline-none focus:ring-2 focus:ring-pastelBlue focus:border-transparent
                   {errors.confirmBy ? 'border-red-400 bg-red-50' : 'border-gray-300'}"

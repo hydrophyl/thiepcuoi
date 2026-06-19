@@ -4,80 +4,88 @@ function capitalize(s: string): string {
 }
 export type Locale = {
   // Shell
-  lang: string
-  skipLink: string
-  pageTitle: string
+  lang: string;
+  skipLink: string;
+  pageTitle: string;
 
   // App.svelte — guest banner + footer
-  guestBanner: (opts: { name: string; salutation: string; appellation: string }) => string
-  footerTagline: (opts: { salutation: string }) => string
+  guestBanner: (opts: {
+    name: string;
+    salutation: string;
+    appellation: string;
+  }) => string;
+  footerTagline: (opts: { salutation: string }) => string;
 
   // Hero.svelte
-  heroAriaLabel: string
-  heroSubheading: (opts: { appellation: string }) => string
+  heroAriaLabel: string;
+  heroSubheading: (opts: { appellation: string }) => string;
   countdown: {
-    days: string
-    hours: string
-    minutes: string
-    seconds: string
-    ariaLabel: (d: number, h: number, m: number, s: number) => string
-  }
+    days: string;
+    hours: string;
+    minutes: string;
+    seconds: string;
+    ariaLabel: (d: number, h: number, m: number, s: number) => string;
+  };
 
   // Story.svelte
-  storyImageAlt: (n: number) => string
+  storyImageAlt: (n: number) => string;
 
   // Gallery.svelte
-  galleryTitle: string
-  galleryAriaLabel: string
-  galleryImageAlt: (n: number) => string
+  galleryTitle: string;
+  galleryAriaLabel: string;
+  galleryImageAlt: (n: number) => string;
 
   // Locations.svelte
-  locationsTitle: string
-  hcmDate: string
-  hanoiDate: string
-  mapButton: string
-  hcmMapAriaLabel: string
-  hanoiMapAriaLabel: string
+  locationsTitle: string;
+  hcmDate: string;
+  hanoiDate: string;
+  mapButton: string;
+  hcmMapAriaLabel: string;
+  hanoiMapAriaLabel: string;
 
   // RSVP.svelte
-  rsvpTitle: string
-  rsvpSubtitle: (opts: { salutation: string; appellation: string }) => string
-  rsvpThankYouTitle: (opts: { salutation: string }) => string
-  rsvpThankYouMsg: (opts: { salutation: string; appellation: string }) => string
-  nameLabel: string
-  namePlaceholder: string
-  nameError: string
-  nameTooLong: string
-  attendanceLabel: string
-  attendanceYes: (opts: { salutation: string }) => string
-  attendanceNo: (opts: { salutation: string }) => string
-  attendanceMaybe: (opts: { salutation: string }) => string
-  guestsLabel: string
-  guestsError: string
-  cityLabel: (opts: { salutation: string }) => string
-  cityHCM: string
-  cityHanoi: string
-  cityBoth: string
-  confirmByLabel: (opts: { salutation: string }) => string
-  confirmByError: (opts: { salutation: string }) => string
-  submitBtn: string
-  submittingBtn: string
+  rsvpTitle: string;
+  rsvpSubtitle: (opts: { salutation: string; appellation: string }) => string;
+  rsvpThankYouTitle: (opts: { salutation: string }) => string;
+  rsvpThankYouMsg: (opts: {
+    salutation: string;
+    appellation: string;
+  }) => string;
+  nameLabel: string;
+  namePlaceholder: string;
+  nameError: string;
+  nameTooLong: string;
+  attendanceLabel: string;
+  attendanceYes: (opts: { salutation: string }) => string;
+  attendanceNo: (opts: { salutation: string }) => string;
+  attendanceMaybe: (opts: { salutation: string }) => string;
+  guestsLabel: string;
+  guestsError: string;
+  cityLabel: (opts: { salutation: string }) => string;
+  cityHCM: string;
+  cityHanoi: string;
+  cityBoth: string;
+  confirmByLabel: (opts: { salutation: string }) => string;
+  confirmByError: (opts: { salutation: string }) => string;
+  submitBtn: string;
+  submittingBtn: string;
 
   // AudioPlayer.svelte
-  audioPlay: string
-  audioPause: string
-}
+  audioPlay: string;
+  audioPause: string;
+};
 
 export const vi: Locale = {
   lang: 'vi',
   skipLink: 'Chuyển tới nội dung chính',
   pageTitle: 'Thiệp Cưới — Đức Duy & Xuân Thy',
   guestBanner: ({ name, salutation, appellation }) =>
-    `Kính mời${salutation ? ` ${salutation}` : ''} ${name} tới dự lễ cưới của ${appellation}!`,
+    `Thân mời ${salutation ? ` ${salutation}` : ''} ${name} tới dự lễ cưới của ${appellation}!`,
   footerTagline: ({ salutation }) => `© 2026 - Hẹn ${salutation} nha`,
 
-  heroAriaLabel: 'Thiệp cưới Bé Hy và Bé Di',
-  heroSubheading: ({ appellation }) => `${capitalize(appellation)} sắp kết hôn rồi!`,
+  heroAriaLabel: 'Thiệp cưới Đức Duy & Xuân Thy',
+  heroSubheading: ({ appellation }) =>
+    `${capitalize(appellation)} sắp kết hôn rồi!`,
   countdown: {
     days: 'Ngày',
     hours: 'Giờ',
@@ -102,31 +110,38 @@ export const vi: Locale = {
 
   rsvpTitle: 'Xác Nhận',
   rsvpSubtitle: ({ salutation, appellation }) =>
-    `Sự hiện diện của ${salutation || 'bạn'} là niềm vinh hạnh cho gia đình ${appellation}`,
+    `Sự hiện diện của ${salutation || 'bạn'} là niềm vinh hạnh cho gia đình`,
   rsvpThankYouTitle: ({ salutation }) => `Cảm ơn ${salutation || 'bạn'}!`,
-  rsvpThankYouMsg: ({ salutation, appellation }) => `Cảm ơn vì đã dành thời gian quý báu của ${salutation || 'bạn'} cho ${appellation}`,
+  rsvpThankYouMsg: ({ salutation, appellation }) =>
+    `Cảm ơn vì đã dành thời gian quý báu của ${salutation || 'bạn'} cho ${appellation}`,
   nameLabel: 'Họ và Tên',
   namePlaceholder: 'Nhập tên ...',
   nameError: 'Vui lòng nhập tên của bạn.',
   nameTooLong: 'Tên quá dài (tối đa 100 ký tự).',
   attendanceLabel: 'Tham dự',
-  attendanceYes: ({ salutation }) => `Chắc chắn rồi, ${salutation || 'mình'} sẽ tới!`,
-  attendanceNo: ({ salutation }) => `Rất tiếc, ${salutation || 'mình'} không thể đến`,
-  attendanceMaybe: ({ salutation }) => `Chưa chắc, ${salutation || 'mình'} sẽ xác nhận sau`,
+  attendanceYes: ({ salutation }) =>
+    `Chắc chắn rồi, ${salutation || 'mình'} sẽ tới!`,
+  attendanceNo: ({ salutation }) =>
+    `Rất tiếc, ${salutation || 'mình'} không thể đến`,
+  attendanceMaybe: ({ salutation }) =>
+    `Chưa chắc, ${salutation || 'mình'} sẽ xác nhận sau`,
   guestsLabel: 'Số lượng người',
   guestsError: 'Số người phải từ 1 đến 20.',
-  cityLabel: ({ salutation }) => `${salutation || 'Bạn'} sẽ tham dự tiệc ở thành phố nào?`,
-  cityHCM: 'Hồ Chí Minh – 27.12.2026 (11AM–3PM)',
+  cityLabel: ({ salutation }) =>
+    `${salutation || 'Bạn'} sẽ tham dự tiệc ở thành phố nào?`,
+  cityHCM: 'Hồ Chí Minh – 27.12.2026 (11AM–2PM)',
   cityHanoi: 'Hà Nội – 05.01.2027 (5PM–8PM)',
   cityBoth: 'Cả hai!',
-  confirmByLabel: ({ salutation }) => `${salutation || 'Bạn'} sẽ xác nhận trước ngày…`,
-  confirmByError: ({ salutation }) => `Vui lòng chọn ngày ${salutation || 'bạn'} sẽ xác nhận.`,
+  confirmByLabel: ({ salutation }) =>
+    `${salutation || 'Bạn'} sẽ xác nhận trước ngày…`,
+  confirmByError: ({ salutation }) =>
+    `Vui lòng chọn ngày ${salutation || 'bạn'} sẽ xác nhận.`,
   submitBtn: 'Gửi',
   submittingBtn: 'Đang gửi...',
 
   audioPlay: 'Bật nhạc nền',
   audioPause: 'Tắt nhạc nền',
-}
+};
 
 export const en: Locale = {
   lang: 'en',
@@ -136,7 +151,7 @@ export const en: Locale = {
     `Welcome, ${name}! You are cordially invited to our wedding.`,
   footerTagline: () => '© 2026 · See you there',
 
-  heroAriaLabel: 'Wedding invitation for Bé Hy and Bé Di',
+  heroAriaLabel: 'Wedding invitation for Đức Duy & Xuân Thy',
   heroSubheading: () => 'We are getting married',
   countdown: {
     days: 'Days',
@@ -175,7 +190,7 @@ export const en: Locale = {
   guestsLabel: 'Number of guests',
   guestsError: 'Number of guests must be between 1 and 20.',
   cityLabel: () => 'Which reception will you attend?',
-  cityHCM: 'Ho Chi Minh City – Dec 27, 2026 (11AM–3PM)',
+  cityHCM: 'Ho Chi Minh City – Dec 27, 2026 (11AM–2PM)',
   cityHanoi: 'Hanoi – Jan 05, 2027 (5PM–8PM)',
   cityBoth: 'Both!',
   confirmByLabel: () => "I'll confirm by...",
@@ -185,4 +200,4 @@ export const en: Locale = {
 
   audioPlay: 'Play background music',
   audioPause: 'Pause background music',
-}
+};

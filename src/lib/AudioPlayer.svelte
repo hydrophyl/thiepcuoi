@@ -1,30 +1,30 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount } from 'svelte'
   // Import through Vite so the file gets a content-hash URL (proper cache busting).
-  import audioSrc from '../assets/perfect.opus';
-  import type { Locale } from './locales';
+  import audioSrc from '../assets/perfect.opus'
+  import type { Locale } from './locales'
 
-  export let autoplay = false;
-  export let locale: Locale;
+  export let autoplay = false
+  export let locale: Locale
 
-  let isPlaying = false;
-  let audioRef: HTMLAudioElement;
+  let isPlaying = false
+  let audioRef: HTMLAudioElement
 
   onMount(() => {
     if (autoplay) {
       audioRef.play()
-        .then(() => { isPlaying = true; })
-        .catch(() => { /* browser blocked autoplay — user must click */ });
+        .then(() => { isPlaying = true })
+        .catch(() => { /* browser blocked autoplay — user must click */ })
     }
-  });
+  })
 
   function togglePlay() {
     if (isPlaying) {
-      audioRef.pause();
+      audioRef.pause()
     } else {
-      audioRef.play().catch(e => console.log('Audio autoplay prevented:', e));
+      audioRef.play().catch(e => console.log('Audio autoplay prevented:', e))
     }
-    isPlaying = !isPlaying;
+    isPlaying = !isPlaying
   }
 </script>
 

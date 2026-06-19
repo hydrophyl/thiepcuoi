@@ -1,34 +1,34 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import heroBg from '../assets/hero_bg.jpg';
-  import type { Locale } from './locales';
-  export let appellation = 'chúng mình';
+  import { onMount } from 'svelte'
+  import heroBg from '../assets/hero_bg.jpg'
+  import type { Locale } from './locales'
+  export let appellation = 'chúng mình'
 
-  export let weddingDate: Date;
-  export let locale: Locale;
+  export let weddingDate: Date
+  export let locale: Locale
 
-  let days = 0;
-  let hours = 0;
-  let minutes = 0;
-  let seconds = 0;
+  let days = 0
+  let hours = 0
+  let minutes = 0
+  let seconds = 0
 
   function updateCountdown() {
-    const now = new Date();
-    const diff = weddingDate.getTime() - now.getTime();
+    const now = new Date()
+    const diff = weddingDate.getTime() - now.getTime()
 
     if (diff > 0) {
-      days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      minutes = Math.floor((diff / 1000 / 60) % 60);
-      seconds = Math.floor((diff / 1000) % 60);
+      days = Math.floor(diff / (1000 * 60 * 60 * 24))
+      hours = Math.floor((diff / (1000 * 60 * 60)) % 24)
+      minutes = Math.floor((diff / 1000 / 60) % 60)
+      seconds = Math.floor((diff / 1000) % 60)
     }
   }
 
   onMount(() => {
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
-  });
+    updateCountdown()
+    const interval = setInterval(updateCountdown, 1000)
+    return () => clearInterval(interval)
+  })
 </script>
 
 <!--
@@ -52,8 +52,14 @@
 
   <!-- Content sits above the image -->
   <div class="relative z-10 max-w-3xl animate-fade-in-up">
-    <h2 class="tracking-widest text-3xl md:text-5xl mb-4">{locale.heroSubheading({appellation})}</h2>
-    <h1 class="text-5xl md:text-8xl font-script text-gray-800 mb-4 drop-shadow-sm">Duy & Thy</h1>
+    <h2 class="tracking-widest text-3xl md:text-5xl mb-4">
+      {locale.heroSubheading({ appellation })}
+    </h2>
+    <h1
+      class="text-5xl md:text-8xl font-script text-gray-800 mb-4 drop-shadow-sm"
+    >
+      Duy & Thy
+    </h1>
 
     <!--
       role="timer": tells screen readers this is a countdown clock.
@@ -66,18 +72,32 @@
       class="flex gap-4 md:gap-8 justify-center mt-8 text-gray-700"
     >
       <div class="flex flex-col items-center">
-        <span class="flex justify-center items-center text-3xl md:text-5xl font-script bg-green-100 w-22 h-22 rounded-xl opacity-80" aria-hidden="true">{days}</span>
-        <span class="text-xs uppercase tracking-wider mt-1">{locale.countdown.days}</span>
+        <span
+          class="flex justify-center items-center text-3xl md:text-5xl font-script bg-green-100 w-22 h-22 rounded-xl opacity-80"
+          aria-hidden="true">{days}</span
+        >
+        <span class="text-xs uppercase tracking-wider mt-1"
+          >{locale.countdown.days}</span
+        >
       </div>
       <div class="flex flex-col items-center">
-        <span class="flex justify-center items-center text-3xl md:text-5xl font-script bg-green-100 w-22 h-22 rounded-xl opacity-80" aria-hidden="true">{hours}</span>
-        <span class="text-xs uppercase tracking-wider mt-1">{locale.countdown.hours}</span>
+        <span
+          class="flex justify-center items-center text-3xl md:text-5xl font-script bg-green-100 w-22 h-22 rounded-xl opacity-80"
+          aria-hidden="true">{hours}</span
+        >
+        <span class="text-xs uppercase tracking-wider mt-1"
+          >{locale.countdown.hours}</span
+        >
       </div>
       <div class="flex flex-col items-center">
-        <span class="flex justify-center items-center text-3xl md:text-5xl font-script bg-green-100 w-22 h-22 rounded-xl opacity-80" aria-hidden="true">{minutes}</span>
-        <span class="text-xs uppercase tracking-wider mt-1">{locale.countdown.minutes}</span>
+        <span
+          class="flex justify-center items-center text-3xl md:text-5xl font-script bg-green-100 w-22 h-22 rounded-xl opacity-80"
+          aria-hidden="true">{minutes}</span
+        >
+        <span class="text-xs uppercase tracking-wider mt-1"
+          >{locale.countdown.minutes}</span
+        >
       </div>
     </div>
   </div>
 </section>
-

@@ -1,29 +1,33 @@
 <script lang="ts">
-  import type { Locale } from './locales';
-  import { onMount } from 'svelte';
+  import type { Locale } from './locales'
+  import { onMount } from 'svelte'
 
-  export let locale: Locale;
-  export let appellation = 'chúng mình';
-  export let salutation = 'bạn';
+  export let locale: Locale
+  export let appellation = 'chúng mình'
+  export let salutation = 'bạn'
+
+  // Optional overrides for parent-invite page — when provided, replaces default quotes entirely
+  export let quotesOverride: string[] | undefined = undefined
+  export let viQuotesOverride: string[] | undefined = undefined
 
   // ── Load numbered images from src/assets/gallery/ ─────────────────────
   const modules = import.meta.glob('../assets/gallery/*.{jpg,jpeg,png,webp}', {
     eager: false,
-  }) as Record<string, () => Promise<{ default: string }>>;
+  }) as Record<string, () => Promise<{ default: string }>>
 
   const keys = Object.keys(modules).sort((a, b) => {
-    const n = (s: string) => parseInt(s.match(/(\d+)\.[^.]+$/)?.[1] ?? '0', 10);
-    return n(a) - n(b);
-  });
-  const total = keys.length;
+    const n = (s: string) => parseInt(s.match(/(\d+)\.[^.]+$/)?.[1] ?? '0', 10)
+    return n(a) - n(b)
+  })
+  const total = keys.length
 
-  let urls: (string | null)[] = Array(total).fill(null);
+  let urls: (string | null)[] = Array(total).fill(null)
 
   async function loadImage(idx: number) {
-    if (idx < 0 || idx >= total || urls[idx] !== null) return;
-    const mod = await modules[keys[idx]]();
-    urls[idx] = mod.default;
-    urls = [...urls];
+    if (idx < 0 || idx >= total || urls[idx] !== null) return
+    const mod = await modules[keys[idx]]()
+    urls[idx] = mod.default
+    urls = [...urls]
   }
 
   // ── Quotes ────────────────────────────────────────────────────────────
@@ -31,55 +35,56 @@
     '9 years together. Countless memories. One meaningful journey.',
     "We're turning the page to a new chapter as we become husband and wife.",
     "You've been part of our story over the years, and your presence and support have meant more to us than we can fully express.",
-    "We know that traveling to Vietnam for our wedding is a long journey, especially during a time often reserved for rest and family in Europe. While we would be truly happy to celebrate with you—at either or both of our ceremonies—we completely understand if it's not possible.\n\nYour kind thoughts and well wishes already mean a great deal to us.",
-  ];
+    "We know that traveling to Vietnam for our wedding is a long journey, especially during a time often reserved for rest and family in Europe. While we would be truly happy to celebrate with you—at either or both of our weddings—we completely understand if it's not possible.\n\nYour kind thoughts and well wishes already mean a great deal to us.",
+  ]
 
   function weTerm(app: string): string {
-    if(app){return app}
-    return 'chúng mình';
+    if (app) return app
+    return 'chúng mình'
   }
 
   function capitalize(s: string): string {
-    return s.charAt(0).toUpperCase() + s.slice(1);
+    return s.charAt(0).toUpperCase() + s.slice(1)
   }
 
-  $: we = locale.lang === 'vi' ? weTerm(appellation) : '';
-  $: viQuotes = [
+  $: we = locale.lang === 'vi' ? weTerm(appellation) : ''
+  $: viQuotes = viQuotesOverride ?? [
     '9 năm bên nhau là một hành trình đầy ý nghĩa.',
     `${capitalize(we)} sắp đánh dấu một cột mốc mới trên hành trình tình yêu để trở thành vợ chồng.`,
     `Cảm ơn vì ${(salutation || 'bạn')} đã luôn đồng hành cùng ${we} trong suốt những năm qua. Sự hiện diện và ủng hộ của ${salutation || 'bạn'} dành cho ${we} thực sự quý giá hơn những gì ${we} có thể diễn tả.`,
     `Mong ${(salutation || 'bạn')} có thể dành chút thời gian tham dự lễ cưới của ${we}`
-  ];
+  ]
 
-  $: quotes = locale.lang === 'en' ? enQuotes : viQuotes;
+  $: enQuotesResolved = quotesOverride ?? enQuotes
+  $: quotes = locale.lang === 'en' ? enQuotesResolved : viQuotes
 
   // ── Carousel state ────────────────────────────────────────────────────
-  let container: HTMLDivElement;
-  let currentIndex = 0;
+  let container: HTMLDivElement
+  let currentIndex = 0
 
   function scrollTo(index: number) {
-    if (!container) return;
-    const clamped = Math.max(0, Math.min(index, total - 1));
-    const slide = container.children[clamped] as HTMLElement;
+    if (!container) return
+    const clamped = Math.max(0, Math.min(index, total - 1))
+    const slide = container.children[clamped] as HTMLElement
     if (slide) {
-      slide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-      currentIndex = clamped;
+      slide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
+      currentIndex = clamped
     }
   }
 
   function prev() {
-    scrollTo(currentIndex - 1);
+    scrollTo(currentIndex - 1)
   }
 
   function next() {
-    scrollTo(currentIndex + 1);
+    scrollTo(currentIndex + 1)
   }
 
   function updateCurrentIndex() {
-    if (!container) return;
-    const scrollLeft = container.scrollLeft;
-    const slideWidth = container.clientWidth;
-    currentIndex = Math.round(scrollLeft / slideWidth);
+    if (!container) return
+    const scrollLeft = container.scrollLeft
+    const slideWidth = container.clientWidth
+    currentIndex = Math.round(scrollLeft / slideWidth)
   }
 
   // ── Lazy loading ───────────────────────────────────────────────────────
@@ -88,18 +93,18 @@
       (entries) => {
         for (const e of entries) {
           if (e.isIntersecting) {
-            const idx = Number((e.target as HTMLElement).dataset.lazyIndex);
-            loadImage(idx);
-            io.unobserve(e.target);
+            const idx = Number((e.target as HTMLElement).dataset.lazyIndex)
+            loadImage(idx)
+            io.unobserve(e.target)
           }
         }
       },
       { rootMargin: '400px' }
-    );
-    document.querySelectorAll('[data-lazy-index]').forEach((el) => io.observe(el));
+    )
+    document.querySelectorAll('[data-lazy-index]').forEach((el) => io.observe(el))
 
-    return () => io.disconnect();
-  });
+    return () => io.disconnect()
+  })
 </script>
 
 {#if total === 0}
@@ -110,7 +115,7 @@
     </p>
   </section>
 {:else}
- <!-- ── Quotes Section ──────────────────────────────────────────────── -->
+  <!-- ── Quotes Section ──────────────────────────────────────────────── -->
   <section class="quotes-section">
     <div class="quotes-frame">
       {#each quotes as quote, i}

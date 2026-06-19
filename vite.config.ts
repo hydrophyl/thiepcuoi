@@ -18,6 +18,8 @@ export default defineConfig(({ command }) => ({
         main: resolve(__dirname, 'index.html'),
         // English page at /en/
         en: resolve(__dirname, 'en/index.html'),
+        // Parent-invite page at /parent/
+        parent: resolve(__dirname, 'parent/index.html'),
       },
       output: {
         // Split the Svelte runtime into its own chunk — browsers cache it across deployments
