@@ -77,7 +77,7 @@ export type Locale = {
 
 export const vi: Locale = {
   lang: 'vi',
-  skipLink: 'Chuyển tới nội dung chính',
+  skipLink: 'Loading',
   pageTitle: 'Thiệp Cưới — Đức Duy & Xuân Thy',
   guestBanner: ({ name, salutation, appellation }) =>
     `Thân mời ${salutation ? ` ${salutation}` : ''} ${name} tới dự lễ cưới của ${appellation}!`,
