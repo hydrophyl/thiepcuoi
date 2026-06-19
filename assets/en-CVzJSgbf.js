@@ -1,0 +1,1 @@
+import"./locales-cxk-5_k_.js";import{m as e}from"./vendor-svelte-DUM8eO0j.js";import{t}from"./App-Bxilr7Qp.js";e(t,{target:document.getElementById(`app`),props:{lang:`en`}});
