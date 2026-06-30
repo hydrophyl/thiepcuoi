@@ -1,0 +1,1 @@
+import"./locales-DHQ9IxCS.js";import{m as e}from"./vendor-svelte-Btw2YkT3.js";import{t}from"./App-CHOSdFOV.js";e(t,{target:document.getElementById(`app`)});
