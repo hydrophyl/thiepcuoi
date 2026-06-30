@@ -60,16 +60,16 @@
 
   // ── Carousel state ────────────────────────────────────────────────────
   let container: HTMLDivElement
+  let sectionRef: HTMLElement
   let currentIndex = 0
+  let scrollTimer: ReturnType<typeof setInterval> | null = null
 
   function scrollTo(index: number) {
     if (!container) return
     const clamped = Math.max(0, Math.min(index, total - 1))
-    const slide = container.children[clamped] as HTMLElement
-    if (slide) {
-      slide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
-      currentIndex = clamped
-    }
+    const slideWidth = container.clientWidth
+    currentIndex = clamped
+    container.scrollTo({ left: clamped * slideWidth, behavior: 'smooth' })
   }
 
   function prev() {
@@ -87,7 +87,22 @@
     currentIndex = Math.round(scrollLeft / slideWidth)
   }
 
-  // ── Lazy loading ───────────────────────────────────────────────────────
+  function startAutoScroll() {
+    if (scrollTimer) return
+    scrollTimer = setInterval(() => {
+      if (!container) return
+      const next = currentIndex >= total - 1 ? 0 : currentIndex + 1
+      scrollTo(next)
+    }, 3000) as unknown as ReturnType<typeof setInterval>
+  }
+
+  function stopAutoScroll() {
+    if (!scrollTimer) return
+    clearInterval(scrollTimer)
+    scrollTimer = null
+  }
+
+  // ── Lazy loading & auto-scroll ───────────────────────────────────────────
   onMount(() => {
     const io = new IntersectionObserver(
       (entries) => {
@@ -103,7 +118,26 @@
     )
     document.querySelectorAll('[data-lazy-index]').forEach((el) => io.observe(el))
 
-    return () => io.disconnect()
+    // Auto-scroll when the entire carousel section is visible
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            startAutoScroll()
+          } else {
+            stopAutoScroll()
+          }
+        }
+      },
+      { threshold: 0.2 }
+    )
+    if (sectionRef) sectionObserver.observe(sectionRef)
+
+    return () => {
+      io.disconnect()
+      sectionObserver.disconnect()
+      stopAutoScroll()
+    }
   })
 </script>
 
@@ -127,7 +161,7 @@
     </div>
   </section>
   <!-- ── Image Carousel ──────────────────────────────────────────────── -->
-  <section class="gallery-carousel" aria-label={locale.galleryAriaLabel}>
+  <section class="gallery-carousel" aria-label={locale.galleryAriaLabel} bind:this={sectionRef}>
     <div class="carousel-wrapper">
       <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
       <div
