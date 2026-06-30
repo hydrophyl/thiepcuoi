@@ -15,6 +15,7 @@ export type Locale = {
     appellation: string;
   }) => string;
   footerTagline: (opts: { salutation: string }) => string;
+  parentQuotes: (opts: { salutation: string; appellation: string }) => string[];
 
   // Hero.svelte
   heroAriaLabel: string;
@@ -141,6 +142,17 @@ export const vi: Locale = {
 
   audioPlay: 'Bật nhạc nền',
   audioPause: 'Tắt nhạc nền',
+  parentQuotes: ({ salutation, appellation }) => {
+    const s = salutation || 'các bạn'
+    const a = appellation || 'hai con'
+    return [
+      'Sau một hành trình 9 năm bên nhau, nay các con đã quyết định đi đến hôn nhân.',
+      `Thân mời ${s} đến dự tiệc cưới, chung vui cùng gia đình chúng tôi.`,
+      `Thật sự rất trân trọng khi nhận được những lời chúc chân thành mà ${s} gởi đến.`,
+      `Nhưng sự hiện diện của ${s} trong ngày vui của ${a} mới chính là niềm vui, niềm hạnh phúc lớn nhất.`,
+      `Gia đình chúng tôi chân thành cảm ơn và rất mong được gặp ${s} trong ngày vui sắp đến`,
+    ]
+  },
 };
 
 export const en: Locale = {

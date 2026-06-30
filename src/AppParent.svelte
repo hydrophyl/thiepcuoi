@@ -14,28 +14,6 @@
   let appellation = ' chúng tôi'
   let salutation = ''
 
-  let parentQuotes: string[] = []
-  $: parentQuotes = (salutation || appellation)
-    ? [
-        `Trân trọng thân mời ${salutation || 'quý vị'} tới dự lễ cưới của ${appellation}!`,
-        `Sự hiện diện của ${salutation || 'quý vị'} là niềm vinh dự lớn lao cho gia đình.`,
-        `Gia đình rất mong được đón tiếp ${salutation || 'quý vị'} tại hai buổi tiệc cưới thân mật này.`,
-        `Xin cảm ơn ${salutation || 'quý vị'} vì tình cảm và sự ủng hộ dành cho ${appellation}.`,
-      ]
-    : [
-        'Trân trọng thân mời quý vị tới dự lễ cưới của chúng tôi!',
-        'Sự hiện diện của quý vị là niềm vinh dự lớn lao cho gia đình chúng tôi.',
-        'Gia đình chúng tôi mong được đón tiếp quý vị tại hai buổi tiệc cưới thân mật này.',
-        'Xin cảm ơn quý vị vì tình cảm và sự ủng hộ dành cho chúng tôi.',
-      ]
-
-  const parentEnQuotes = [
-    'We cordially invite you to celebrate the wedding of our beloved children!',
-    'Your presence would be a tremendous honor for our family.',
-    'We look forward to welcoming you at these two intimate receptions.',
-    'Thank you for your love and support for our children.',
-  ]
-
   function stripHtml(raw: string): string {
     const el = document.createElement('div')
     el.innerHTML = raw
@@ -89,8 +67,8 @@
     {locale}
     {appellation}
     {salutation}
-    quotesOverride={parentEnQuotes}
-    viQuotesOverride={parentQuotes}
+    quotesOverride={locale.parentQuotes({ salutation, appellation })}
+    viQuotesOverride={locale.parentQuotes({ salutation, appellation })}
   />
   <RSVP {guestName} {appellation} {salutation} {locale} />
   <AudioPlayer autoplay={false} {locale} />
