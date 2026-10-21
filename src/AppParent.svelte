@@ -7,11 +7,25 @@
   import AudioPlayer from './lib/AudioPlayer.svelte'
   import { vi, type Locale } from './lib/locales'
 
+  import Families from './lib/Families.svelte'
+
   const locale: Locale = vi
 
-  const weddingDate = new Date('2026-12-27T18:00:00')
+  // TODO: điền tên + địa chỉ thật
+  const groom = {
+    title: 'Nhà trai',
+    names: ['Bà Phó Anh Phương'],
+    address: 'CT13A KĐT Nam Thăng Long, Phú Thượng, Hà Nội',
+  }
+  const bride = {
+    title: 'Nhà gái',
+    names: ['Ông Trần Quốc Thắng', 'Bà Nguyễn Thanh Thuý'],
+    address: '123/21B Đỗ Xuân Hợp, Phước Long B, Tp. Thủ Đức, Tp. Hồ Chí Minh',
+  }
+
+  const weddingDate = new Date('2026-12-27T11:00:00')
   let guestName = ''
-  let appellation = ' chúng tôi'
+  let appellation = 'Chúng con'
   let salutation = ''
 
   function stripHtml(raw: string): string {
@@ -67,9 +81,13 @@
     {locale}
     {appellation}
     {salutation}
+    boldIndex={[2, 4]}
+    italicIndex={[4]}
     quotesOverride={locale.parentQuotes({ salutation, appellation })}
     viQuotesOverride={locale.parentQuotes({ salutation, appellation })}
-  />
+  >
+    <Families {groom} {bride} />
+  </Gallery>
   <RSVP {guestName} {appellation} {salutation} {locale} />
   <AudioPlayer autoplay={false} {locale} />
 

@@ -6,7 +6,25 @@ import { resolve } from 'path'
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
   base: command === 'build' ? '/thiepcuoi/' : '/',
-  plugins: [tailwindcss(), svelte()],
+  plugins: [
+    tailwindcss(),
+    svelte(),
+    {
+      // Dev only: /parent and /en need trailing slash, else Vite serves root index.html
+      name: 'dev-trailing-slash',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          const [path, query = ''] = (req.url ?? '').split('?')
+          if (path === '/parent' || path === '/en') {
+            res.statusCode = 302
+            res.setHeader('Location', path + '/' + (query && '?' + query))
+            return res.end()
+          }
+          next()
+        })
+      },
+    },
+  ],
 
   // Treat .m4a as a static asset so imports get content-hashed URLs (proper cache busting)
   assetsInclude: ['**/*.m4a'],

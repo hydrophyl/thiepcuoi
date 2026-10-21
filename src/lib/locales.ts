@@ -2,6 +2,12 @@
 function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
+// "bác Hùng" -> "bác", "anh chị Nam" -> "anh chị"; no pronoun match keeps full string
+export function pronounOf(s: string): string {
+  return (
+    s.match(/^(?:(?:ông|bà|bác|cô|chú|dì|cậu|mợ|thím|anh|chị|em|cháu|các|quý|khách|bạn)(?:\s+|$))+/i)?.[0].trim() ?? s
+  );
+}
 export type Locale = {
   // Shell
   lang: string;
@@ -121,20 +127,20 @@ export const vi: Locale = {
   nameTooLong: 'Tên quá dài (tối đa 100 ký tự).',
   attendanceLabel: 'Tham dự',
   attendanceYes: ({ salutation }) =>
-    `Chắc chắn rồi, ${salutation || 'mình'} sẽ tới!`,
+    `Chắc chắn tới!`,
   attendanceNo: ({ salutation }) =>
-    `Rất tiếc, ${salutation || 'mình'} không thể đến`,
+    `Rất tiếc không thể đến`,
   attendanceMaybe: ({ salutation }) =>
-    `Chưa chắc, ${salutation || 'mình'} sẽ xác nhận sau`,
+    `Chưa chắc, sẽ xác nhận sau`,
   guestsLabel: 'Số lượng người',
   guestsError: 'Số người phải từ 1 đến 20.',
   cityLabel: ({ salutation }) =>
-    `${salutation || 'Bạn'} sẽ tham dự tiệc ở thành phố nào?`,
-  cityHCM: 'Hồ Chí Minh – 27.12.2026 (11AM–2PM)',
+    `${capitalize(salutation || 'Bạn')} sẽ tham dự tiệc ở thành phố nào?`,
+  cityHCM: 'Hồ Chí Minh – 27.12.2026 (11AM–3PM)',
   cityHanoi: 'Hà Nội – 05.01.2027 (5PM–8PM)',
   cityBoth: 'Cả hai!',
   confirmByLabel: ({ salutation }) =>
-    `${salutation || 'Bạn'} sẽ xác nhận trước ngày…`,
+    `${capitalize(salutation || 'Bạn')} sẽ xác nhận trước ngày…`,
   confirmByError: ({ salutation }) =>
     `Vui lòng chọn ngày ${salutation || 'bạn'} sẽ xác nhận.`,
   submitBtn: 'Gửi',
@@ -143,14 +149,17 @@ export const vi: Locale = {
   audioPlay: 'Bật nhạc nền',
   audioPause: 'Tắt nhạc nền',
   parentQuotes: ({ salutation, appellation }) => {
-    const s = salutation || 'các bạn'
-    const a = appellation || 'hai con'
+    const s = salutation || 'quý khách'
+    const a = appellation || 'các con'
+    const pronoun = pronounOf(s)
     return [
-      'Sau một hành trình 9 năm bên nhau, nay các con đã quyết định đi đến hôn nhân.',
-      `Thân mời ${s} đến dự tiệc cưới, chung vui cùng gia đình chúng tôi.`,
-      `Thật sự rất trân trọng khi nhận được những lời chúc chân thành mà ${s} gởi đến.`,
-      `Nhưng sự hiện diện của ${s} trong ngày vui của ${a} mới chính là niềm vui, niềm hạnh phúc lớn nhất.`,
-      `Gia đình chúng tôi chân thành cảm ơn và rất mong được gặp ${s} trong ngày vui sắp đến`,
+      'Sau một hành trình 9 năm bên nhau, nay các con của chúng tôi đã quyết định đi đến hôn nhân.',
+      `Trân trọng kính mời`,
+      capitalize(s),
+      `Tới dự bữa cơm thân mật chung vui cùng gia đình chúng tôi mừng lễ thành hôn của hai cháu:`,
+      `Đức Duy và Xuân Thy`,
+      `Sự hiện diện của ${pronoun} là món quà quý giá dành cho gia đình chúng tôi trong ngày trọng đại này.`,
+      `Gia đình chúng tôi rất hân hạnh được đón tiếp!`,
     ]
   },
 };
@@ -162,6 +171,14 @@ export const en: Locale = {
   guestBanner: ({ name }) =>
     `Welcome, ${name}! You are cordially invited to our wedding.`,
   footerTagline: () => '© 2026 · See you there',
+  parentQuotes: ({ salutation }) => [
+    'After 9 years together, our children have decided to marry.',
+    'We warmly invite',
+    salutation || 'you',
+    'to join us for a family meal celebrating the wedding of Đức Duy and Xuân Thy.',
+    'Your presence would be a precious gift to our family on this special day.',
+    'Our family would be honored to welcome you!',
+  ],
 
   heroAriaLabel: 'Wedding invitation for Đức Duy & Xuân Thy',
   heroSubheading: () => 'We are getting married',
@@ -202,7 +219,7 @@ export const en: Locale = {
   guestsLabel: 'Number of guests',
   guestsError: 'Number of guests must be between 1 and 20.',
   cityLabel: () => 'Which reception will you attend?',
-  cityHCM: 'Ho Chi Minh City – Dec 27, 2026 (11AM–2PM)',
+  cityHCM: 'Ho Chi Minh City – Dec 27, 2026 (11AM–3PM)',
   cityHanoi: 'Hanoi – Jan 05, 2027 (5PM–8PM)',
   cityBoth: 'Both!',
   confirmByLabel: () => "I'll confirm by...",

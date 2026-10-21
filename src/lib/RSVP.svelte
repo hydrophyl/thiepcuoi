@@ -1,9 +1,11 @@
 <script lang="ts">
-  import type { Locale } from './locales'
+  import { pronounOf, type Locale } from './locales'
 
   export let guestName = ''
   export let appellation = 'chúng tôi'
   export let salutation = ''
+  // "bác Hùng" -> "bác": RSVP copy addresses the guest by pronoun only
+  $: sal = pronounOf(salutation)
   export let locale: Locale
 
   let name = ''
@@ -38,7 +40,7 @@
     }
 
     if (attendance === 'maybe' && !confirmBy) {
-      errors.confirmBy = locale.confirmByError({salutation})
+      errors.confirmBy = locale.confirmByError({ salutation: sal })
       valid = false
     }
 
@@ -72,13 +74,13 @@
   <div class="max-w-2xl mx-auto px-4 relative z-10">
     <div class="bg-white/70 backdrop-blur-md border border-gray-100 p-8 md:p-12 rounded-3xl shadow-xl">
       <h2 class="text-4xl md:text-6xl font-script text-center text-gray-800 mb-4">{locale.rsvpTitle}</h2>
-      <p class="text-center text-gray-500 mb-8">{locale.rsvpSubtitle({ salutation, appellation })}</p>
+      <p class="text-center text-gray-500 mb-8">{locale.rsvpSubtitle({ salutation: sal, appellation })}</p>
       
       {#if submitted}
         <div class="text-center py-10 animate-fade-in-up">
             <svg class="w-16 h-16 text-pastelLila mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            <h3 class="text-2xl font-semibold mb-2">{locale.rsvpThankYouTitle({ salutation })}</h3>
-            <p class="text-gray-600">{locale.rsvpThankYouMsg({ salutation, appellation })}</p>
+            <h3 class="text-2xl font-semibold mb-2">{locale.rsvpThankYouTitle({ salutation: sal })}</h3>
+            <p class="text-gray-600">{locale.rsvpThankYouMsg({ salutation: sal, appellation })}</p>
         </div>
       {:else}
         <form on:submit|preventDefault={handleSubmit} class="space-y-6">
@@ -105,9 +107,9 @@
                 bind:value={attendance}
                 class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pastelBlue focus:border-transparent outline-none transition-all"
               >
-                <option value="yes">{locale.attendanceYes({ salutation })}</option>
-                <option value="no">{locale.attendanceNo({ salutation })}</option>
-                <option value="maybe">{locale.attendanceMaybe({ salutation })}</option>
+                <option value="yes">{locale.attendanceYes({ salutation: sal })}</option>
+                <option value="no">{locale.attendanceNo({ salutation: sal })}</option>
+                <option value="maybe">{locale.attendanceMaybe({ salutation: sal })}</option>
               </select>
             </div>
             
@@ -129,7 +131,7 @@
             </div>
 
             <div class="md:col-span-2">
-              <label for="city" class="block text-sm font-medium text-gray-700 mb-1">{locale.cityLabel({ salutation })}</label>
+              <label for="city" class="block text-sm font-medium text-gray-700 mb-1">{locale.cityLabel({ salutation: sal })}</label>
               <select 
                 id="city" 
                 autocomplete="off"
@@ -145,7 +147,7 @@
 
             {#if attendance === 'maybe'}
             <div class="md:col-span-2">
-              <label for="confirmBy" class="block text-sm font-medium text-gray-700 mb-1">{locale.confirmByLabel({ salutation })}</label>
+              <label for="confirmBy" class="block text-sm font-medium text-gray-700 mb-1">{locale.confirmByLabel({ salutation: sal })}</label>
               <input
                 type="date"
                 id="confirmBy"

@@ -9,6 +9,10 @@
   // Optional overrides for parent-invite page — when provided, replaces default quotes entirely
   export let quotesOverride: string[] | undefined = undefined
   export let viQuotesOverride: string[] | undefined = undefined
+  // Indexes of quote lines to render bold (guest name + couple names on parent page)
+  export let boldIndex: number[] = []
+  // Bold lines also shown italic at body size (couple names)
+  export let italicIndex: number[] = []
 
   // ── Load numbered images from src/assets/gallery/ ─────────────────────
   const modules = import.meta.glob('../assets/gallery/*.{jpg,jpeg,png,webp}', {
@@ -48,11 +52,15 @@
   }
 
   $: we = locale.lang === 'vi' ? weTerm(appellation) : ''
+  // Guest may know only one of the couple: "chúng cháu" -> "cháu/chúng cháu", "chúng tôi" -> "tôi/chúng tôi"
+  $: weLower = we.trim().toLowerCase()
+  $: single = weLower.replace(/^chúng\s+/, '')
+  $: oneOrBoth = single === weLower ? weLower : `${single}/${weLower}`
   $: viQuotes = viQuotesOverride ?? [
-    '9 năm bên nhau là một hành trình đầy ý nghĩa.',
-    `${capitalize(we)} sắp đánh dấu một cột mốc mới trên hành trình tình yêu để trở thành vợ chồng.`,
-    `Cảm ơn vì ${(salutation || 'bạn')} đã luôn đồng hành cùng ${we} trong suốt những năm qua. Sự hiện diện và ủng hộ của ${salutation || 'bạn'} dành cho ${we} thực sự quý giá hơn những gì ${we} có thể diễn tả.`,
-    `Mong ${(salutation || 'bạn')} có thể dành chút thời gian tham dự lễ cưới của ${we}`
+    `9 năm bên nhau là một hành trình đầy ý nghĩa và trải nghiệm với ${we}.`,
+    `Sắp tới, ${we} sẽ đánh dấu một cột mốc mới trên hành trình tình yêu là trở thành vợ và chồng của nhau.`,
+    `Cảm ơn vì ${(salutation || 'bạn')} đã đồng hành và là một phần thanh xuân của ${oneOrBoth} trong suốt những năm qua.`,
+    `Sự tham gia của ${(salutation || 'bạn')} vào lễ cưới của ${we} đem lại niềm vui không thể đong đếm, nhân lên nhiều lần hơn nữa khi ta đã lâu không có dịp gặp lại.`
   ]
 
   $: enQuotesResolved = quotesOverride ?? enQuotes
@@ -150,11 +158,12 @@
   </section>
 {:else}
   <!-- ── Quotes Section ──────────────────────────────────────────────── -->
+  <slot />
   <section class="quotes-section">
-    <div class="quotes-frame">
+    <div class="quotes-frame" class:parent={!!quotesOverride}>
       {#each quotes as quote, i}
-        <p class="quote-text">{quote}</p>
-        {#if i < quotes.length - 1}
+        <p class="quote-text" class:guest={boldIndex.includes(i)} class:italic-name={italicIndex.includes(i)}>{quote}</p>
+        {#if i < quotes.length - 1 && !quotesOverride}
           <span class="quote-divider">✦</span>
         {/if}
       {/each}
@@ -355,14 +364,14 @@
     width: 100%;
     border: 1px solid #e2ddd7;
     border-radius: 6px;
-    padding: 3rem 2.5rem;
+    padding: 2rem 1.75rem;
     background: #ffffff;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 0.4rem;
   }
 
   .quotes-frame::before {
@@ -381,9 +390,41 @@
     text-align: center;
     font-style: italic;
     font-weight: 300;
-    line-height: 1.9;
+    line-height: 1.5;
     letter-spacing: 0.02em;
     word-break: break-word;
+    margin: 0;
+  }
+
+  /* Parent invitation: formal serif, tight rhythm, no dividers */
+  .quotes-frame.parent {
+    gap: 0.15rem;
+    padding: 2rem 1.75rem;
+  }
+
+  .parent .quote-text {
+    font-family: 'Lora', serif;
+    font-style: normal;
+    font-weight: 400;
+    color: #4a443e;
+    font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+
+  .parent .quote-text.guest {
+    font-weight: 700;
+    color: #2d2925;
+    font-size: clamp(1.15rem, 3vw, 1.4rem);
+    margin: 0.1rem 0 0.25rem;
+  }
+
+  /* Couple names: script font (has Vietnamese glyphs, unlike Alex Brush), one weight only */
+  .parent .quote-text.italic-name {
+    font-family: 'Great Vibes', cursive;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.5rem;
     margin: 0;
   }
 
@@ -422,7 +463,7 @@
     }
 
     .quotes-frame {
-      padding: 2rem 1.5rem;
+      padding: 1.5rem 1.25rem;
     }
   }
 </style>
