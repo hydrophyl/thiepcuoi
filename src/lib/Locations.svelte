@@ -45,7 +45,7 @@
           Previous text-pastelBlue (#A7C7E7) on white was ~2.5:1 — failed.
         -->
         <p class="text-gray-600 mb-1">{locale.hcmDate}</p>
-        <p class="text-gray-800 font-bold mb-4">11:00 AM – 3:00 PM</p>
+        <p class="text-gray-800 font-bold mb-4">10:30 AM – 2:00 PM</p>
         <p class="text-gray-600 italic text-sm">
           Riverside Palace, 360D Bến Vân Đồn, Phường Vĩnh Hội, Quận 4, TP. Hồ
           Chí Minh

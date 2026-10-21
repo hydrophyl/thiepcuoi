@@ -11,7 +11,6 @@
 
   const locale: Locale = vi
 
-  // TODO: điền tên + địa chỉ thật
   const groom = {
     title: 'Nhà trai',
     names: ['Bà Phó Anh Phương'],
@@ -20,7 +19,7 @@
   const bride = {
     title: 'Nhà gái',
     names: ['Ông Trần Quốc Thắng', 'Bà Nguyễn Thanh Thuý'],
-    address: '123/21B Đỗ Xuân Hợp, Phước Long B, Tp. Thủ Đức, Tp. Hồ Chí Minh',
+    address: '123/21B Đỗ Xuân Hợp, Phước Long B, Thủ Đức, Tp. Hồ Chí Minh',
   }
 
   const weddingDate = new Date('2026-12-27T11:00:00')

@@ -136,7 +136,7 @@ export const vi: Locale = {
   guestsError: 'Số người phải từ 1 đến 20.',
   cityLabel: ({ salutation }) =>
     `${capitalize(salutation || 'Bạn')} sẽ tham dự tiệc ở thành phố nào?`,
-  cityHCM: 'Hồ Chí Minh – 27.12.2026 (11AM–3PM)',
+  cityHCM: 'Hồ Chí Minh – 27.12.2026 (10:30AM–2PM)',
   cityHanoi: 'Hà Nội – 05.01.2027 (5PM–8PM)',
   cityBoth: 'Cả hai!',
   confirmByLabel: ({ salutation }) =>
@@ -156,7 +156,7 @@ export const vi: Locale = {
       'Sau một hành trình 9 năm bên nhau, nay các con của chúng tôi đã quyết định đi đến hôn nhân.',
       `Trân trọng kính mời`,
       capitalize(s),
-      `Tới dự bữa cơm thân mật chung vui cùng gia đình chúng tôi mừng lễ thành hôn của hai cháu:`,
+      `Tới dự bữa tiệc thân mật chung vui cùng gia đình chúng tôi mừng lễ thành hôn của hai cháu:`,
       `Đức Duy và Xuân Thy`,
       `Sự hiện diện của ${pronoun} là món quà quý giá dành cho gia đình chúng tôi trong ngày trọng đại này.`,
       `Gia đình chúng tôi rất hân hạnh được đón tiếp!`,
@@ -219,7 +219,7 @@ export const en: Locale = {
   guestsLabel: 'Number of guests',
   guestsError: 'Number of guests must be between 1 and 20.',
   cityLabel: () => 'Which reception will you attend?',
-  cityHCM: 'Ho Chi Minh City – Dec 27, 2026 (11AM–3PM)',
+  cityHCM: 'Ho Chi Minh City – Dec 27, 2026 (10:30AM–2PM)',
   cityHanoi: 'Hanoi – Jan 05, 2027 (5PM–8PM)',
   cityBoth: 'Both!',
   confirmByLabel: () => "I'll confirm by...",
