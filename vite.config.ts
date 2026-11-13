@@ -3,6 +3,21 @@ import { svelte } from '@sveltejs/vite-plugin-svelte'
 import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
 
+// /parent, /en, /hn, /sg and the city parent pages need a trailing slash,
+// else the static server falls back to the root index.html (both cities).
+const slashPaths = ['/parent', '/en', '/hn', '/sg', '/parent/hn', '/parent/sg']
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function redirectToTrailingSlash(req: any, res: any, next: () => void) {
+  const [path, query = ''] = (req.url ?? '').split('?')
+  if (slashPaths.includes(path)) {
+    res.statusCode = 302
+    res.setHeader('Location', path + '/' + (query && '?' + query))
+    return res.end()
+  }
+  next()
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
   base: command === 'build' ? '/thiepcuoi/' : '/',
@@ -10,25 +25,14 @@ export default defineConfig(({ command }) => ({
     tailwindcss(),
     svelte(),
     {
-      // Dev only: /parent and /en need trailing slash, else Vite serves root index.html
-      name: 'dev-trailing-slash',
+      name: 'trailing-slash-redirect',
       configureServer(server) {
-        server.middlewares.use((req, res, next) => {
-          const [path, query = ''] = (req.url ?? '').split('?')
-          if (
-            path === '/parent' ||
-            path === '/en' ||
-            path === '/hn' ||
-            path === '/sg' ||
-            path === '/parent/hn' ||
-            path === '/parent/sg'
-          ) {
-            res.statusCode = 302
-            res.setHeader('Location', path + '/' + (query && '?' + query))
-            return res.end()
-          }
-          next()
-        })
+        server.middlewares.use(redirectToTrailingSlash)
+      },
+      // `vite preview` does not inherit configureServer, and without this it
+      // silently serves the root page for /hn — same guest-visible mistake.
+      configurePreviewServer(server) {
+        server.middlewares.use(redirectToTrailingSlash)
       },
     },
   ],
