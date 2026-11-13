@@ -6,13 +6,16 @@
   import RSVP from './lib/RSVP.svelte'
   import AudioPlayer from './lib/AudioPlayer.svelte'
   import { vi, en, type Locale } from './lib/locales'
+  import { venueStart, type Venue } from './lib/venue'
 
   export let lang: 'vi' | 'en' = 'vi'
+  // City pages (/hn, /sg, /parent/hn, /parent/sg) mount with their own venue
+  export let venue: Venue = 'all'
   // Use <html lang="..."> as authoritative source (handles multi-page builds reliably).
   // Falls back to mount() prop for backward compatibility.
   const locale: Locale = lang === 'en' || document.documentElement.lang.startsWith('en') ? en : vi
 
-  const weddingDate = new Date('2026-12-27T18:00:00')
+  const weddingDate = venueStart(venue)
   let guestName = ''
   let appellation = 'chúng tôi' // default self-reference; override via ?appellation=con|cháu|em|…
   let salutation = '' // how to address the guest; override via ?salutation=ông|bà|anh|chị|em|cháu|…
@@ -74,13 +77,14 @@
     {weddingDate}
     {locale} {appellation}
   />
-  <Locations {locale} />
+  <Locations {locale} {venue} />
   <Gallery {locale} {appellation} {salutation} />
   <RSVP
     {guestName}
     {appellation}
     {salutation}
     {locale}
+    {venue}
   />
   <AudioPlayer
     autoplay={false}

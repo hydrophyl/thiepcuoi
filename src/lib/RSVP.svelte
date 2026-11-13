@@ -1,9 +1,12 @@
 <script lang="ts">
   import { pronounOf, type Locale } from './locales'
+  import type { Venue } from './venue'
 
   export let guestName = ''
   export let appellation = 'chúng tôi'
   export let salutation = ''
+  // Which reception this invite is for: 'all' keeps the city selector
+  export let venue: Venue = 'all'
   // "bác Hùng" -> "bác": RSVP copy addresses the guest by pronoun only
   $: sal = pronounOf(salutation)
   export let locale: Locale

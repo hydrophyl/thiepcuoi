@@ -1,6 +1,9 @@
 <script lang="ts">
   import type { Locale } from './locales'
+  import type { Venue } from './venue'
   export let locale: Locale
+  // Which reception(s) to show: 'all' on the main pages, one city on /hn, /sg
+  export let venue: Venue = 'all'
 </script>
 
 <section

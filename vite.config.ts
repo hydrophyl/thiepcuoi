@@ -15,7 +15,14 @@ export default defineConfig(({ command }) => ({
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
           const [path, query = ''] = (req.url ?? '').split('?')
-          if (path === '/parent' || path === '/en') {
+          if (
+            path === '/parent' ||
+            path === '/en' ||
+            path === '/hn' ||
+            path === '/sg' ||
+            path === '/parent/hn' ||
+            path === '/parent/sg'
+          ) {
             res.statusCode = 302
             res.setHeader('Location', path + '/' + (query && '?' + query))
             return res.end()
@@ -38,6 +45,12 @@ export default defineConfig(({ command }) => ({
         en: resolve(__dirname, 'en/index.html'),
         // Parent-invite page at /parent/
         parent: resolve(__dirname, 'parent/index.html'),
+        // Single-city invites: /hn/ and /sg/
+        hn: resolve(__dirname, 'hn/index.html'),
+        sg: resolve(__dirname, 'sg/index.html'),
+        // Single-city parent invites: /parent/hn/ and /parent/sg/
+        parentHn: resolve(__dirname, 'parent/hn/index.html'),
+        parentSg: resolve(__dirname, 'parent/sg/index.html'),
       },
       output: {
         // Split the Svelte runtime into its own chunk — browsers cache it across deployments
