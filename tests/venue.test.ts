@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { VENUES, venueCards, venueStart } from '../src/lib/venue.ts'
+import { VENUES, rsvpCity, venueCards, venueStart } from '../src/lib/venue.ts'
 
 test('two venues, Saigon first', () => {
   assert.deepEqual(VENUES.map((v) => v.id), ['sg', 'hn'])
@@ -23,4 +23,10 @@ test('venueCards filters or returns everything', () => {
   assert.deepEqual(venueCards('all').map((v) => v.id), ['sg', 'hn'])
   assert.deepEqual(venueCards('hn').map((v) => v.id), ['hn'])
   assert.deepEqual(venueCards('sg').map((v) => v.id), ['sg'])
+})
+
+test('rsvpCity follows the linked city and defaults to Ho Chi Minh', () => {
+  assert.equal(rsvpCity('all'), 'Ho Chi Minh')
+  assert.equal(rsvpCity('sg'), 'Ho Chi Minh')
+  assert.equal(rsvpCity('hn'), 'Hanoi')
 })

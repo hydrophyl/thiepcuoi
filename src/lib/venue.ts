@@ -60,3 +60,8 @@ export function venueCards(venue: Venue): VenueCard[] {
 export function venueStart(venue: Venue): Date {
   return new Date(venueCards(venue)[0].startDate)
 }
+
+// RSVP needs a city even on the "both" pages (it defaults to HCMC there)
+export function rsvpCity(venue: Venue): string {
+  return venueCards(venue)[0].rsvpCity
+}
