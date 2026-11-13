@@ -1,1 +1,0 @@
-import"./AudioPlayer-CUu5U8MQ.js";import{h as e}from"./vendor-svelte-C-A1UiAl.js";import{t}from"./App-0ITsfZdf.js";e(t,{target:document.getElementById(`app`),props:{lang:`en`}});
