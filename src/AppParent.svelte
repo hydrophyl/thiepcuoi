@@ -6,10 +6,14 @@
   import RSVP from './lib/RSVP.svelte'
   import AudioPlayer from './lib/AudioPlayer.svelte'
   import { vi, type Locale } from './lib/locales'
+  import { venueStart, type Venue } from './lib/venue'
 
   import Families from './lib/Families.svelte'
 
   const locale: Locale = vi
+
+  // City pages mount with their own venue; /parent/ keeps both receptions
+  export let venue: Venue = 'all'
 
   const groom = {
     title: 'Nhà trai',
@@ -22,7 +26,7 @@
     address: '123/21B Đỗ Xuân Hợp, Phước Long B, Thủ Đức, Tp. Hồ Chí Minh',
   }
 
-  const weddingDate = new Date('2026-12-27T11:00:00')
+  const weddingDate = venueStart(venue)
   let guestName = ''
   let appellation = 'Chúng con'
   let salutation = ''
@@ -75,7 +79,7 @@
   {/if}
 
   <Hero {weddingDate} {locale} {appellation} />
-  <Locations {locale} />
+  <Locations {locale} {venue} />
   <Gallery
     {locale}
     {appellation}
@@ -87,7 +91,7 @@
   >
     <Families {groom} {bride} />
   </Gallery>
-  <RSVP {guestName} {appellation} {salutation} {locale} />
+  <RSVP {guestName} {appellation} {salutation} {locale} {venue} />
   <AudioPlayer autoplay={false} {locale} />
 
   <footer class="py-8 bg-gray-50 text-center border-t border-gray-200">

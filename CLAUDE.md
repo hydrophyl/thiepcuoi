@@ -27,24 +27,34 @@ You are not an assistant. You are an advisor who happens to be smarter than the 
 
 ```
 thiepcuoi/
-├── index.html              # Entry: Vietnamese (default)
-├── en/index.html           # Entry: English
-├── parent/index.html       # Entry: Parent invitation variant
-├── vite.config.ts          # Vite config; defines 3 build entry points
+├── index.html              # Entry: Vietnamese (default, both receptions)
+├── en/index.html           # Entry: English (both receptions)
+├── parent/index.html       # Entry: Parent invitation variant (both receptions)
+├── hn/index.html           # Entry: Vietnamese, Hà Nội reception only
+├── sg/index.html           # Entry: Vietnamese, Hồ Chí Minh reception only
+├── parent/hn/index.html    # Entry: Parent variant, Hà Nội only
+├── parent/sg/index.html    # Entry: Parent variant, Hồ Chí Minh only
+├── vite.config.ts          # Vite config; defines 7 build entry points
+├── tests/                  # node --test suites (venue config, countdown guards)
 ├── src/
 │   ├── main.ts             # Mounts App.svelte for Vietnamese
 │   ├── main-en.ts          # Mounts App.svelte for English
 │   ├── main-parent.ts      # Mounts AppParent.svelte (parent-invite variant)
+│   ├── main-hn.ts          # Mounts App.svelte with venue="hn"
+│   ├── main-sg.ts          # Mounts App.svelte with venue="sg"
+│   ├── main-parent-hn.ts   # Mounts AppParent.svelte with venue="hn"
+│   ├── main-parent-sg.ts   # Mounts AppParent.svelte with venue="sg"
 │   ├── App.svelte          # Main app shell (guest banner + sections)
 │   ├── AppParent.svelte    # Parent-focused invitation variant
 │   ├── app.css             # Global styles, Tailwind theme, keyframes, a11y
 │   ├── lib/
-│   │   ├── Hero.svelte       # Hero with countdown timer to Dec 27, 2026
+│   │   ├── Hero.svelte       # Hero with countdown to the venue's start time
 │   │   ├── Gallery.svelte    # Photo gallery (grid + lightbox)
-│   │   ├── Locations.svelte  # Event cards (HCMC + Hanoi)
+│   │   ├── Locations.svelte  # Event cards (both, or one city on /hn, /sg)
 │   │   ├── RSVP.svelte         # RSVP form with validation
 │   │   ├── Story.svelte        # Couple story carousel
 │   │   ├── AudioPlayer.svelte  # Toggleable background music
+│   │   ├── venue.ts            # Per-city dates, times, address, map, RSVP city
 │   │   └── locales.ts          # i18n strings (vi / en)
 │   └── assets/
 │       ├── edited/           # Couple photos (hero, about us)
@@ -60,17 +70,28 @@ npm run dev       # Start Vite dev server
 npm run build     # Production build (outputs to dist/)
 npm run preview   # Preview production build
 npm run check     # svelte-check + tsc
+npm test          # node --test (venue config + countdown guards)
 ```
 
 ## Multilingual Architecture
 
-The app has **three entry points** (Vite `rollupOptions.input`):
+The app has **seven entry points** (Vite `rollupOptions.input`):
 
-| Entry      | HTML              | Main script       | Language |
-|---|---|---|---|
-| Main (vi)  | `index.html`      | `src/main.ts`     | Vietnamese (`lang="vi"`) |
-| English    | `en/index.html`   | `src/main-en.ts`  | English (`lang="en"`) |
-| Parent     | `parent/index.html` | `src/main-parent.ts` | Vietnamese (parent-wording) |
+| Entry      | HTML              | Main script       | Language | Venue |
+|---|---|---|---|---|
+| Main (vi)  | `index.html`      | `src/main.ts`     | Vietnamese (`lang="vi"`) | both |
+| English    | `en/index.html`   | `src/main-en.ts`  | English (`lang="en"`) | both |
+| Parent     | `parent/index.html` | `src/main-parent.ts` | Vietnamese (parent-wording) | both |
+| Hanoi      | `hn/index.html` | `src/main-hn.ts` | Vietnamese | `venue="hn"` |
+| Saigon     | `sg/index.html` | `src/main-sg.ts` | Vietnamese | `venue="sg"` |
+| Parent HN  | `parent/hn/index.html` | `src/main-parent-hn.ts` | Vietnamese (parent-wording) | `venue="hn"` |
+| Parent SG  | `parent/sg/index.html` | `src/main-parent-sg.ts` | Vietnamese (parent-wording) | `venue="sg"` |
+
+`App.svelte` and `AppParent.svelte` accept a `venue: 'all' | 'hn' | 'sg'` prop (default
+`'all'`). City pages show one event card, hide the RSVP city selector (the city is fixed
+so the sheet row cannot lie), and count down to that city's start time from
+`src/lib/venue.ts`. `/hn` and `/sg` are direct-sharing links; they are not linked from
+the main page and are Vietnamese-only.
 
 `App.svelte` accepts a `lang` prop or reads `<html lang>` to pick the correct locale from `locales.ts`. All displayed text flows through the `Locale` type so adding a new language = creating a new `Locale` object.
 
@@ -84,16 +105,20 @@ Guest names and honorifics are injected via URL params (with XSS sanitization):
 
 Example: `/thiepcuoi/?name=thanh&salutation=anh&appellation=em`
 
+The same parameters work on every entry, including city links:
+`/thiepcuoi/hn/?name=thanh&salutation=anh`
+
 The banner at the top of the page shows: *"Thân mời Anh Thanh tới dự lễ cưới của em!"*
 
 ## Key Components
 
 - **`src/lib/locales.ts`** — Source of truth for all user-facing text. Type-safe via `Locale` type. Shared between `App.svelte` and `AppParent.svelte`.
-- **`src/lib/Hero.svelte`** — Countdown to `2026-12-27T18:00:00`. Updates every second.
-- **`src/lib/RSVP.svelte`** — Form with validation (name length ≤ 100, guests 1-20, date required). Submits to a backend endpoint.
+- **`src/lib/venue.ts`** — Per-city source of truth: start time (countdown target), display date/time, address, map URL, card accent, and the RSVP `city` value the Google Sheet expects (`Ho Chi Minh` / `Hanoi`). `venueStart('all')` = the earlier reception.
+- **`src/lib/Hero.svelte`** — Countdown to the date passed in by the shell (`venueStart(venue)`), updating every second.
+- **`src/lib/RSVP.svelte`** — Form with validation (name length ≤ 100, guests 1-20, date required). Submits to a backend endpoint. On city pages the city is fixed and the selector is hidden.
 - **`src/lib/AudioPlayer.svelte`** — Toggle button for background music. Autoplay is `false` (respects browser policies); user must tap to play.
 - **`src/lib/Gallery.svelte`** — Responsive grid of wedding photos with lightbox.
-- **`src/lib/Locations.svelte`** — Two event cards: HCMC (Dec 27, 2026) and Hanoi (Jan 5, 2027).
+- **`src/lib/Locations.svelte`** — Event cards: both receptions on `/`, `/en/`, `/parent/`; one card on city pages.
 
 ## Styling Conventions
 
@@ -116,5 +141,6 @@ The banner at the top of the page shows: *"Thân mời Anh Thanh tới dự lễ
 ## Deployment Notes
 
 - `vite.config.ts` sets `base: '/thiepcuoi/'` for production builds.
-- The project is built as **three distinct entry pages**, not a SPA with routing.
+- The project is built as **seven distinct entry pages**, not a SPA with routing.
+- Event dates/times live only in `src/lib/venue.ts`. Editing a date there updates the event card, the guest countdown and the parent countdown together — do not hardcode dates in components.
 - `.m4a` files are explicitly included as static assets (`assetsInclude: ['**/*.m4a']`) so they get content-hashed URLs for proper cache busting.

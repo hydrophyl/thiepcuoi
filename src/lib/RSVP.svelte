@@ -1,9 +1,12 @@
 <script lang="ts">
   import { pronounOf, type Locale } from './locales'
+  import { rsvpCity, type Venue } from './venue'
 
   export let guestName = ''
   export let appellation = 'chúng tôi'
   export let salutation = ''
+  // Which reception this invite is for: 'all' keeps the city selector
+  export let venue: Venue = 'all'
   // "bác Hùng" -> "bác": RSVP copy addresses the guest by pronoun only
   $: sal = pronounOf(salutation)
   export let locale: Locale
@@ -11,7 +14,8 @@
   let name = ''
   $: if (!name && guestName) name = guestName
   let guests = 1
-  let city = 'Ho Chi Minh'
+  // City pages lock this to their own reception; main pages let the guest choose
+  let city = rsvpCity(venue)
   let attendance = 'yes'
   let confirmBy = ''
   let submitted = false
@@ -131,18 +135,26 @@
             </div>
 
             <div class="md:col-span-2">
-              <label for="city" class="block text-sm font-medium text-gray-700 mb-1">{locale.cityLabel({ salutation: sal })}</label>
-              <select 
-                id="city" 
-                autocomplete="off"
-                bind:value={city}
-                disabled={attendance === 'no'}
-                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pastelBlue focus:border-transparent outline-none transition-all disabled:bg-gray-100 disabled:text-gray-400"
-              >
-                <option value="Ho Chi Minh">{locale.cityHCM}</option>
-                <option value="Hanoi">{locale.cityHanoi}</option>
-                <option value="Both">{locale.cityBoth}</option>
-              </select>
+              {#if venue === 'all'}
+                <label for="city" class="block text-sm font-medium text-gray-700 mb-1">{locale.cityLabel({ salutation: sal })}</label>
+                <select 
+                  id="city" 
+                  autocomplete="off"
+                  bind:value={city}
+                  disabled={attendance === 'no'}
+                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pastelBlue focus:border-transparent outline-none transition-all disabled:bg-gray-100 disabled:text-gray-400"
+                >
+                  <option value="Ho Chi Minh">{locale.cityHCM}</option>
+                  <option value="Hanoi">{locale.cityHanoi}</option>
+                  <option value="Both">{locale.cityBoth}</option>
+                </select>
+              {:else}
+                <!-- Single-city invite: the city is fixed, so the submission never lies -->
+                <p class="block text-sm font-medium text-gray-700 mb-1">{locale.cityLabel({ salutation: sal })}</p>
+                <p class="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-700">
+                  {city === 'Hanoi' ? locale.cityHanoi : locale.cityHCM}
+                </p>
+              {/if}
             </div>
 
             {#if attendance === 'maybe'}
